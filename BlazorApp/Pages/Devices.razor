@@ -1,0 +1,20 @@
+﻿@page "/Devices"
+@inject IDeviceData deviceData
+
+<h1>Devices</h1>
+
+<TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterRow">
+    <GridColumns>
+        <GridColumn Field="DeviceName" Title="Device Name" />
+        <GridColumn Field="DeviceFunction" />
+    </GridColumns>
+</TelerikGrid>
+
+@code {
+    private List<IDeviceModel> deviceList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        deviceList = await deviceData.GetDevices();
+    }
+}
