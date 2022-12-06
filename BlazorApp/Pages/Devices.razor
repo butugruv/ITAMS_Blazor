@@ -1,20 +1,51 @@
 ﻿@page "/Devices"
 @inject IDeviceData deviceData
 
-<h1>Devices</h1>
+<div class="row">
+    <div class="col">
+        <h1>Devices</h1>
 
-<TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterRow">
-    <GridColumns>
-        <GridColumn Field="DeviceName" Title="Device Name" />
-        <GridColumn Field="DeviceFunction" />
-    </GridColumns>
-</TelerikGrid>
+        @if (deviceList == null)
+        {
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        }
+        else
+        {
+
+            <TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterRow" Resizable="true">
+                <GridColumns>
+                    <GridColumn Field="DeviceName" Title="Device Name" Width="250px" />
+                    <GridColumn Field="DeviceFunction" Width="250px" />
+                    <GridColumn Field="TypeName" Width="250px" />
+                    <GridColumn Field="Manufacturer" Width="250px" />
+                    <GridColumn Field="Model" Width="250px" />
+                    <GridColumn Field="Poc" Width="250px" />
+                    <GridColumn Field="LocationName" Width="250px" />
+                    <GridColumn Field="Floor" Width="250px" />
+                    <GridColumn Field="Room" />
+                    <GridColumn Field="PackageName" />
+                    <GridColumn Field="CreatedDate" />
+                    <GridColumn Field="CreatedBy" />
+                    <GridColumn Field="ModifiedDate" />
+                    <GridColumn Field="ModifiedBy" />
+                </GridColumns>
+            </TelerikGrid>
+        }
+
+    </div>
+
+</div>
+
+
+
 
 @code {
-    private List<IDeviceModel> deviceList;
+    private List<IDevicesWithLookupsModel> deviceList;
 
     protected override async Task OnInitializedAsync()
     {
-        deviceList = await deviceData.GetDevices();
+        deviceList = await deviceData.GetDevicesWithLookups();
     }
 }
