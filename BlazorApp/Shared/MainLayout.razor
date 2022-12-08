@@ -25,7 +25,7 @@
 *@
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Company name</a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/">ITAMS</a>
     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -39,20 +39,20 @@
 
 <div class="container-fluid">
     <div class="row">
-        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <nav id="sidebarMenu" class="d-md-block bg-light sidebar collapse col-md-3 col-lg-2 col-xl-1">
             <div class="position-sticky pt-3">
                 <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">
-                            Home
-                        </a>
+                    <li class="nav-item">                 
+                        <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                            <span class="oi oi-home" aria-hidden="true"></span> Home
+                        </NavLink>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="devices">
-                            
-                            Devices
-                        </a>
+                        <NavLink class="nav-link" href="Devices" >
+                        <span class="oi oi-laptop" aria-hidden="true"></span> Devices
+                        </NavLink>
                     </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             <span data-feather="shopping-cart"></span>
@@ -72,11 +72,8 @@
             </div>
         </nav>
 
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            @Body
-
-
-            
+        <main class="ms-sm-auto px-md-4 col-md-9 col-lg-10 col-xl-11">
+            @Body      
         </main>
     </div>
 </div>

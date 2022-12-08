@@ -1,40 +1,43 @@
 ﻿@page "/Devices"
 @inject IDeviceData deviceData
+@inject NavigationManager navigationManager
 
+<h2 class="border-bottom pt-3 pb-2 mb-3">Devices</h2>
 
-        <h2>Devices</h2>
+@if (deviceList == null)
+{
+    <div class="spinner-border text-info" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+}
+else
+{
 
-        @if (deviceList == null)
-        {
-            <div class="spinner-border text-info" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        }
-        else
-        {
+    <TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" Resizable="true" ShowColumnMenu="true" Reorderable="true">
+        <GridColumns>
+            <GridCommandColumn Width="70px">
+                <GridCommandButton ThemeColor="primary" Command="EditDevice" OnClick="@HandleEditButtonClick">Edit</GridCommandButton>
 
-            <TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterRow" Resizable="true">
-                <GridColumns>
-                    <GridColumn Field="DeviceName" Title="Device Name" Width="250px" />
-                    <GridColumn Field="DeviceFunction" Width="250px" />
-                    <GridColumn Field="TypeName" Width="250px" />
-                    <GridColumn Field="Manufacturer" Width="250px" />
-                    <GridColumn Field="Model" Width="250px" />
-                    <GridColumn Field="Poc" Width="250px" />
-                    <GridColumn Field="LocationName" Width="250px" />
-                    <GridColumn Field="Floor" Width="250px" />
-                    <GridColumn Field="Room" />
-                    <GridColumn Field="PackageName" />
-                    <GridColumn Field="CreatedDate" />
-                    <GridColumn Field="CreatedBy" />
-                    <GridColumn Field="ModifiedDate" />
-                    <GridColumn Field="ModifiedBy" />
-                </GridColumns>
-            </TelerikGrid>
-        }
+            </GridCommandColumn>
+            <GridColumn Field="DeviceName" Title="Device Name" Width="250px"  />
+            <GridColumn Field="DeviceFunction" Width="250px" />
+            <GridColumn Field="TypeName" Width="250px" />
+            <GridColumn Field="Manufacturer" Width="250px" />
+            <GridColumn Field="Model" Width="250px" />
+            <GridColumn Field="Poc" Width="250px" />
+            <GridColumn Field="LocationName" Width="250px" />
+            <GridColumn Field="Floor" Width="250px" />
+            <GridColumn Field="Room" Width="250px" />
+            <GridColumn Field="PackageName" Width="250px" />
+            <GridColumn Field="CreatedDate" Width="250px" />
+            <GridColumn Field="CreatedBy" Width="250px" />
+            <GridColumn Field="ModifiedDate" Width="250px" />
+            <GridColumn Field="ModifiedBy" Width="250px" />
 
-
-
+            
+        </GridColumns>
+    </TelerikGrid>
+}
 
 
 
@@ -44,5 +47,11 @@
     protected override async Task OnInitializedAsync()
     {
         deviceList = await deviceData.GetDevicesWithLookups();
+    }
+
+    private async Task HandleEditButtonClick(GridCommandEventArgs args)
+    {
+        int id = (args.Item as IDevicesWithLookupsModel).Id; 
+        navigationManager.NavigateTo($"Devices/DeviceForm/{id}");
     }
 }

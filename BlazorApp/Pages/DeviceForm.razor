@@ -1,0 +1,51 @@
+﻿@page "/Devices/DeviceForm/{Id:int}"
+@inject IDeviceData deviceData
+@inject IDeviceTypeData deviceTypeData
+
+    <h2 class="border-bottom pt-3 pb-2 mb-3">Device Details</h2>
+
+
+<TelerikForm Model="@device" Columns="2" ColumnSpacing="25px" ValidationMessageType="@FormValidationMessageType.Tooltip">
+    <FormValidation>
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+    </FormValidation>
+
+    <FormItems>
+        <FormItem Field="@nameof(DisplayDeviceModel.Id)" Enabled="false"></FormItem>
+        <FormItem Field="@nameof(DisplayDeviceModel.DeviceName)"></FormItem>
+        <FormItem Field="@nameof(DisplayDeviceModel.DeviceFunction)"></FormItem>
+
+        <FormItem>
+            <Template>
+                <label class="mb-2" for="deviceType">Device Type:</label>
+                <TelerikDropDownList Data="@deviceTypes" TextField="TypeName" ValueField="Id" @bind-Value="device.DeviceTypeId" Id="deviceType">
+                    <DropDownListSettings>
+                        <DropDownListPopupSettings Height="auto" />
+                    </DropDownListSettings>
+                </TelerikDropDownList>
+            </Template>
+        </FormItem>
+        
+        <FormItem Field="@nameof(DisplayDeviceModel.Poc)"></FormItem>
+        <FormItem Field="@nameof(DisplayDeviceModel.model)"></FormItem>
+    </FormItems>
+
+    <FormButtons>
+
+    </FormButtons>
+</TelerikForm>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private IDeviceModel device = new DisplayDeviceModel();
+    private List<IDeviceTypeModel> deviceTypes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        device = await deviceData.GetDeviceById(Id);
+        deviceTypes = await deviceTypeData.GetDeviceTypes();
+    }
+}
