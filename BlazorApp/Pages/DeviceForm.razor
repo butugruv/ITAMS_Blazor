@@ -5,7 +5,7 @@
     <h2 class="border-bottom pt-3 pb-2 mb-3">Device Details</h2>
 
 
-<TelerikForm Model="@device" Columns="2" ColumnSpacing="25px" ValidationMessageType="@FormValidationMessageType.Tooltip">
+<TelerikForm Model="@device" Columns="2" ColumnSpacing="25px" ValidationMessageType="@FormValidationMessageType.Tooltip" OnValidSubmit="HandleValidSubmit">
     <FormValidation>
         <DataAnnotationsValidator></DataAnnotationsValidator>
     </FormValidation>
@@ -13,12 +13,11 @@
     <FormItems>
         <FormItem Field="@nameof(DisplayDeviceModel.Id)" Enabled="false"></FormItem>
         <FormItem Field="@nameof(DisplayDeviceModel.DeviceName)"></FormItem>
-        <FormItem Field="@nameof(DisplayDeviceModel.DeviceFunction)"></FormItem>
-
+        
         <FormItem>
             <Template>
                 <label class="mb-2" for="deviceType">Device Type:</label>
-                <TelerikDropDownList Data="@deviceTypes" TextField="TypeName" ValueField="Id" @bind-Value="device.DeviceTypeId" Id="deviceType">
+                <TelerikDropDownList Data="@deviceTypes" TextField="TypeName" ValueField="Id" @bind-Value="@device.DeviceTypeId" Id="deviceType">
                     <DropDownListSettings>
                         <DropDownListPopupSettings Height="auto" />
                     </DropDownListSettings>
@@ -28,6 +27,12 @@
         
         <FormItem Field="@nameof(DisplayDeviceModel.Poc)"></FormItem>
         <FormItem Field="@nameof(DisplayDeviceModel.model)"></FormItem>
+        <FormItem>
+            <Template>
+                <label class="mb-2" for="deviceFunction">Device Function:</label>
+                <TelerikTextArea @bind-Value="@device.DeviceFunction" AutoSize="true" Id="deviceFunction"/>
+            </Template>
+        </FormItem>
     </FormItems>
 
     <FormButtons>
@@ -47,5 +52,10 @@
     {
         device = await deviceData.GetDeviceById(Id);
         deviceTypes = await deviceTypeData.GetDeviceTypes();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        
     }
 }

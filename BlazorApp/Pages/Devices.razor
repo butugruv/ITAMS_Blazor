@@ -6,14 +6,13 @@
 
 @if (deviceList == null)
 {
-    <div class="spinner-border text-info" role="status">
-        <span class="visually-hidden">Loading...</span>
-    </div>
+    <h4>Loading...</h4>
 }
 else
 {
 
-    <TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" Resizable="true" ShowColumnMenu="true" Reorderable="true">
+    <TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" 
+                 Resizable="true" ShowColumnMenu="true" Reorderable="true" Groupable="true">
         <GridColumns>
             <GridCommandColumn Width="70px">
                 <GridCommandButton ThemeColor="primary" Command="EditDevice" OnClick="@HandleEditButtonClick">Edit</GridCommandButton>
@@ -54,4 +53,6 @@ else
         int id = (args.Item as IDevicesWithLookupsModel).Id; 
         navigationManager.NavigateTo($"Devices/DeviceForm/{id}");
     }
+
+
 }
