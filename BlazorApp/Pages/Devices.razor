@@ -14,8 +14,8 @@ else
     <TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" 
                  Resizable="true" ShowColumnMenu="true" Reorderable="true" Groupable="true">
         <GridColumns>
-            <GridCommandColumn Width="70px">
-                <GridCommandButton ThemeColor="primary" Command="EditDevice" OnClick="@HandleEditButtonClick">Edit</GridCommandButton>
+            <GridCommandColumn Width="70px" Context="dataItem">
+                <GridCommandButton ThemeColor="primary" Command="EditDevice" OnClick="@( () => HandleEditButtonClick(dataItem as IDevicesWithLookupsModel) )">Edit</GridCommandButton>
 
             </GridCommandColumn>
             <GridColumn Field="DeviceName" Title="Device Name" Width="250px"  />
@@ -38,20 +38,38 @@ else
     </TelerikGrid>
 }
 
+<TelerikWindow Centered="true" @bind-Visible="@windowVisible">
+    <WindowActions>
+        <WindowAction Name="Close" />
+    </WindowActions>
+
+    <WindowContent>
+
+        <DeviceForm Id="deviceId"></DeviceForm>
+        
+        
+    </WindowContent>
+</TelerikWindow>
+
 
 
 @code {
     private List<IDevicesWithLookupsModel> deviceList;
+    public bool windowVisible = false;
+
+    private int deviceId;
 
     protected override async Task OnInitializedAsync()
     {
         deviceList = await deviceData.GetDevicesWithLookups();
     }
 
-    private async Task HandleEditButtonClick(GridCommandEventArgs args)
+    private async Task HandleEditButtonClick(IDevicesWithLookupsModel device)
     {
-        int id = (args.Item as IDevicesWithLookupsModel).Id; 
-        navigationManager.NavigateTo($"Devices/DeviceForm/{id}");
+        //int id = (args.Item as IDevicesWithLookupsModel).Id; 
+        //navigationManager.NavigateTo($"Devices/DeviceForm/{id}");
+        windowVisible = true;
+        deviceId = device.Id;
     }
 
 
