@@ -2,7 +2,12 @@
 @inject IDeviceData deviceData
 @inject NavigationManager navigationManager
 
-<h2 class="border-bottom pt-3 pb-2 mb-3">Devices</h2>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h2>Devices</h2>
+    <div class="btn-group me-2">
+        <button type="button" class="btn btn-primary" @onclick="HandleCreateButtonClick">Create Device</button>
+    </div>
+</div>
 
 @if (deviceList == null)
 {
@@ -38,20 +43,21 @@ else
     </TelerikGrid>
 }
 
-<TelerikWindow Centered="true" @bind-Visible="@windowVisible">
+@*<TelerikWindow Centered="true" @bind-Visible="@windowVisible" Modal="true" Width="70%" Height="90%">
+    <WindowTitle>
+        Device Form
+    </WindowTitle>
     <WindowActions>
         <WindowAction Name="Close" />
+        <WindowAction Name="Maximize" />      
     </WindowActions>
 
     <WindowContent>
-
-        <DeviceForm Id="deviceId"></DeviceForm>
-        
-        
+        <DeviceForm Id="deviceId" ></DeviceForm>
     </WindowContent>
-</TelerikWindow>
+</TelerikWindow>*@
 
-
+<DeviceFormModal Id="deviceId" WindowVisible="@windowVisible"></DeviceFormModal>
 
 @code {
     private List<IDevicesWithLookupsModel> deviceList;
@@ -64,13 +70,22 @@ else
         deviceList = await deviceData.GetDevicesWithLookups();
     }
 
-    private async Task HandleEditButtonClick(IDevicesWithLookupsModel device)
+    private void HandleEditButtonClick(IDevicesWithLookupsModel device)
     {
         //int id = (args.Item as IDevicesWithLookupsModel).Id; 
         //navigationManager.NavigateTo($"Devices/DeviceForm/{id}");
-        windowVisible = true;
         deviceId = device.Id;
+        windowVisible = true;
+
     }
+
+    private void HandleCreateButtonClick()
+    {
+        deviceId = 0;
+        windowVisible = true;
+
+    }
+
 
 
 }
