@@ -1,4 +1,5 @@
 ﻿@page "/Devices"
+@using System.Collections.ObjectModel;
 @inject IDeviceData deviceData
 @inject NavigationManager navigationManager
 
@@ -16,8 +17,8 @@
 else
 {
 
-    <TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" 
-                 Resizable="true" ShowColumnMenu="true" Reorderable="true" Groupable="true">
+    <TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu"
+             Resizable="true" ShowColumnMenu="true" Reorderable="true" Groupable="true" @ref="GridRef">
         <GridColumns>
             <GridCommandColumn Width="70px" Context="dataItem">
                 <GridCommandButton ThemeColor="primary" Command="EditDevice" OnClick="@( () => HandleEditButtonClick(dataItem as IDevicesWithLookupsModel) )">Edit</GridCommandButton>
@@ -57,17 +58,19 @@ else
     </WindowContent>
 </TelerikWindow>*@
 
-<DeviceFormModal Id="deviceId" WindowVisible="@windowVisible"></DeviceFormModal>
+<DeviceFormModal Id="deviceId" WindowVisible="@windowVisible" OnSubmitted="HandleOnSubmitted"></DeviceFormModal>
 
 @code {
     private List<IDevicesWithLookupsModel> deviceList;
+    //private ObservableCollection<IDevicesWithLookupsModel> devicesListObserved;
     public bool windowVisible = false;
-
     private int deviceId;
+    private TelerikGrid<IDevicesWithLookupsModel> GridRef { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         deviceList = await deviceData.GetDevicesWithLookups();
+        //devicesListObserved = new ObservableCollection<IDevicesWithLookupsModel>(deviceList);
     }
 
     private void HandleEditButtonClick(IDevicesWithLookupsModel device)
@@ -86,6 +89,11 @@ else
 
     }
 
-
+    public async Task HandleOnSubmitted()
+    {
+        windowVisible = false;
+        deviceList = await deviceData.GetDevicesWithLookups();
+        //GridRef.Rebind();
+    }
 
 }
