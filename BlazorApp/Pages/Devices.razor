@@ -60,12 +60,19 @@ else
 
 <DeviceFormModal Id="deviceId" WindowVisible="@windowVisible" OnSubmitted="HandleOnSubmitted"></DeviceFormModal>
 
+<TelerikNotification @ref="@Notification"
+                     Class="demo-notification"
+                     VerticalPosition="NotificationVerticalPosition.Bottom"
+                     HorizontalPosition="NotificationHorizontalPosition.Right">
+</TelerikNotification>
+
 @code {
     private List<IDevicesWithLookupsModel> deviceList;
     //private ObservableCollection<IDevicesWithLookupsModel> devicesListObserved;
     public bool windowVisible = false;
     private int deviceId;
     private TelerikGrid<IDevicesWithLookupsModel> GridRef { get; set; }
+    public TelerikNotification Notification { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -93,7 +100,22 @@ else
     {
         windowVisible = false;
         deviceList = await deviceData.GetDevicesWithLookups();
+        ShowNotifications();
         //GridRef.Rebind();
+    }
+
+    public void ShowNotifications()
+    {
+        var closeDelay = 1000;
+
+        Notification.Show(new NotificationModel()
+            {
+                Text = "Device successfully updated",
+                ThemeColor = ThemeConstants.Notification.ThemeColor.Success,
+                CloseAfter = closeDelay
+            });
+
+        //await Task.Delay(closeDelay);
     }
 
 }

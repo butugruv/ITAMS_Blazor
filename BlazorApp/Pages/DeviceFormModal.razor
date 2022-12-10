@@ -1,7 +1,6 @@
 ﻿@inject IDeviceData deviceData
 @inject IDeviceTypeData deviceTypeData
 
-
 <TelerikWindow Centered="true" @bind-Visible="@WindowVisible" Modal="true" Width="70%" Height="90%">
     <WindowTitle>
         Device Form
@@ -22,14 +21,12 @@
                 }
                 else
                 {
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary" form="form">Create</button>
                 }
 
             </div>
 
         </div>
-
-
 
         <TelerikForm Model="@device" Columns="2" ColumnSpacing="25px" ValidationMessageType="@FormValidationMessageType.Tooltip"
                      Id="form" OnValidSubmit="HandleValidSubmit">
@@ -57,7 +54,7 @@
                 </FormItem>
 
                 <FormItem Field="@nameof(DisplayDeviceModel.Poc)"></FormItem>
-                <FormItem Field="@nameof(DisplayDeviceModel.model)"></FormItem>
+                <FormItem Field="@nameof(DisplayDeviceModel.Model)"></FormItem>
                 <FormItem Field="@nameof(DisplayDeviceModel.ManufacturerId)"></FormItem>
                 <FormItem Field="@nameof(DisplayDeviceModel.CreatedDate)"></FormItem>
                 <FormItem Field="@nameof(DisplayDeviceModel.CreatedBy)"></FormItem>
@@ -76,11 +73,8 @@
             </FormItems>
 
             <FormButtons>
-
             </FormButtons>
         </TelerikForm>
-
-
 
     </WindowContent>
 </TelerikWindow>
@@ -102,19 +96,31 @@
 
     protected override async Task OnParametersSetAsync()
     {
+        device = new DisplayDeviceModel();
+
         if (Id > 0)
         {
             device = await deviceData.GetDeviceById(Id);
         }
-
+        
         deviceTypes = await deviceTypeData.GetDeviceTypes();
+
     }
 
     private async Task HandleValidSubmit()
     {
-        device.ModifiedDate = DateTime.Now;
 
-        await deviceData.UpdateDevice(device);
+
+        if (Id > 0)
+        {
+            device.ModifiedDate = DateTime.Now;
+            await deviceData.UpdateDevice(device);
+        }
+        else
+        {
+            device.CreatedDate = DateTime.Now;
+            await deviceData.CreateDevice(device); 
+        }
 
         CloseWindow();
 
@@ -122,6 +128,7 @@
 
     public void CloseWindow()
     {
+        // doesn't really matter what value is passed back, just mainly use this to create a trigger on the parent component to do stuff from
         OnSubmitted.InvokeAsync("submitted");
     }
 }
