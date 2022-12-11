@@ -22,18 +22,20 @@
     </div>
     <div class="col-6">
         <h4>Online device counts by Network</h4>
-        <TelerikChart>
-            <ChartSeriesItems>
-                <ChartSeries Type="ChartSeriesType.Column" Name="SYLAN" Data="@data1">
-                </ChartSeries>
-                <ChartSeries Type="ChartSeriesType.Column" Name="SECNET" Data="@data2">
-                </ChartSeries>
-            </ChartSeriesItems>
+            <TelerikChart>
+                <ChartSeriesItems>
+                    <ChartSeries Type="ChartSeriesType.Column" Name="SYLAN" Data="@data1">
+                    </ChartSeries>
+                    <ChartSeries Type="ChartSeriesType.Column" Name="SECNET" Data="@data2">
+                    </ChartSeries>
+                </ChartSeriesItems>
 
-            <ChartCategoryAxes>
-                <ChartCategoryAxis Categories="@xAxisItems"></ChartCategoryAxis>
-            </ChartCategoryAxes>
-        </TelerikChart>
+                <ChartCategoryAxes>
+                    <ChartCategoryAxis Categories="@xAxisItems"></ChartCategoryAxis>
+                </ChartCategoryAxes>
+            </TelerikChart>
+        
+        
 
     </div>
     <div class="col-6">

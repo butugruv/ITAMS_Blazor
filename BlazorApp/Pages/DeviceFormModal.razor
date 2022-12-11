@@ -1,4 +1,5 @@
-﻿@inject IDeviceData deviceData
+﻿@page "/Devices/DeviceFormModal/{Id:int}/{WindowVisible:bool}"
+@inject IDeviceData deviceData
 @inject IDeviceTypeData deviceTypeData
 
 
@@ -37,10 +38,10 @@
             <FormItems>
                 @if (Id > 0)
                 {
-                    <FormItem Field="@nameof(DisplayDeviceModel.Id)" Enabled="false"></FormItem>
+                    <FormItem Field="Id" Enabled="false"></FormItem>
                 }
 
-                <FormItem Field="@nameof(DisplayDeviceModel.DeviceName)"></FormItem>
+                <FormItem Field="DeviceName"></FormItem>
 
                 <FormItem>
                     <Template>
@@ -53,18 +54,21 @@
                     </Template>
                 </FormItem>
 
-                <FormItem Field="@nameof(DisplayDeviceModel.Poc)"></FormItem>
-                <FormItem Field="@nameof(DisplayDeviceModel.Model)"></FormItem>
-                <FormItem Field="@nameof(DisplayDeviceModel.ManufacturerId)"></FormItem>
-                <FormItem Field="@nameof(DisplayDeviceModel.CreatedDate)"></FormItem>
-                <FormItem Field="@nameof(DisplayDeviceModel.CreatedBy)"></FormItem>
-                <FormItem Field="@nameof(DisplayDeviceModel.ModifiedDate)"></FormItem>
-                <FormItem Field="@nameof(DisplayDeviceModel.ModifiedBy)"></FormItem>
-                <FormItem Field="@nameof(DisplayDeviceModel.LocationId)"></FormItem>
-                <FormItem Field="@nameof(DisplayDeviceModel.LocationFloorId)"></FormItem>
-                <FormItem Field="@nameof(DisplayDeviceModel.LocationFloorRoomId)"></FormItem>
-                <FormItem Field="@nameof(DisplayDeviceModel.RmfPackageId)"></FormItem>
-                <FormItem Field="@nameof(DisplayDeviceModel.NetworkId)"></FormItem>
+                <FormItem Field="Poc"></FormItem>
+                <FormItem Field="Model"></FormItem>
+                <FormItem Field="ManufacturerId"></FormItem>                          
+                <FormItem Field="LocationId"></FormItem>
+                <FormItem Field="LocationFloorId"></FormItem>
+                <FormItem Field="LocationFloorRoomId"></FormItem>
+                <FormItem Field="RmfPackageId"></FormItem>
+                <FormItem Field="NetworkId"></FormItem>
+                @if (Id > 0)
+                {
+                    <FormItem Field="CreatedDate"></FormItem>
+                    <FormItem Field="CreatedBy"></FormItem>
+                    <FormItem Field="ModifiedDate"></FormItem>
+                    <FormItem Field="ModifiedBy"></FormItem>
+                }
                 <FormItem>
                     <Template>
                         <label class="mb-2" for="deviceFunction">Device Function:</label>
@@ -77,11 +81,17 @@
             </FormButtons>
         </TelerikForm>
 
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h2>IP Addresses</h2>          
-        </div>
 
-        <DeviceIpsGrid DeviceId="@Id"></DeviceIpsGrid>      
+        @if (Id > 0)
+        {
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h2>IP Addresses</h2>          
+            </div>
+
+        
+            <DeviceIpsGrid DeviceId="@Id"></DeviceIpsGrid>
+        }
+            
     </WindowContent>
 </TelerikWindow>
 
@@ -97,18 +107,22 @@
     [Parameter]
     public EventCallback<string> OnSubmitted { get; set; }
 
-    private IDeviceModel device = new DisplayDeviceModel();
+    private IDeviceModel device = new DeviceModel();
     private List<IDeviceTypeModel> deviceTypes;
 
 
 
     protected override async Task OnParametersSetAsync()
     {
-        device = new DisplayDeviceModel();
+
 
         if (Id > 0)
         {
             device = await deviceData.GetDeviceById(Id);
+        }
+        else
+        {
+            device = new DeviceModel();
         }
 
         deviceTypes = await deviceTypeData.GetDeviceTypes();
@@ -122,11 +136,13 @@
         if (Id > 0)
         {
             device.ModifiedDate = DateTime.Now;
+            device.ModifiedBy = "CY";
             await deviceData.UpdateDevice(device);
         }
         else
         {
             device.CreatedDate = DateTime.Now;
+            device.CreatedBy = "CY";
             await deviceData.CreateDevice(device); 
         }
 
