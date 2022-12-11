@@ -33,6 +33,7 @@ namespace BlazorApp
             builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
             builder.Services.AddScoped<IDeviceData, DeviceData>();
             builder.Services.AddScoped<IDeviceTypeData, DeviceTypeData>();
+            builder.Services.AddScoped<IDeviceIpData, DeviceIpData>();
 
             var app = builder.Build();
 

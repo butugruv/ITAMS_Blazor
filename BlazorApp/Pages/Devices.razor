@@ -16,13 +16,11 @@
 }
 else
 {
-
     <TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu"
              Resizable="true" ShowColumnMenu="true" Reorderable="true" Groupable="true" @ref="GridRef">
         <GridColumns>
             <GridCommandColumn Width="70px" Context="dataItem">
                 <GridCommandButton ThemeColor="primary" Command="EditDevice" OnClick="@( () => HandleEditButtonClick(dataItem as IDevicesWithLookupsModel) )">Edit</GridCommandButton>
-
             </GridCommandColumn>
             <GridColumn Field="DeviceName" Title="Device Name" Width="250px"  />
             <GridColumn Field="DeviceFunction" Width="250px" />
@@ -38,25 +36,10 @@ else
             <GridColumn Field="CreatedBy" Width="250px" />
             <GridColumn Field="ModifiedDate" Width="250px" />
             <GridColumn Field="ModifiedBy" Width="250px" />
-
-            
+           
         </GridColumns>
     </TelerikGrid>
 }
-
-@*<TelerikWindow Centered="true" @bind-Visible="@windowVisible" Modal="true" Width="70%" Height="90%">
-    <WindowTitle>
-        Device Form
-    </WindowTitle>
-    <WindowActions>
-        <WindowAction Name="Close" />
-        <WindowAction Name="Maximize" />      
-    </WindowActions>
-
-    <WindowContent>
-        <DeviceForm Id="deviceId" ></DeviceForm>
-    </WindowContent>
-</TelerikWindow>*@
 
 <DeviceFormModal Id="deviceId" WindowVisible="@windowVisible" OnSubmitted="HandleOnSubmitted"></DeviceFormModal>
 
@@ -106,7 +89,7 @@ else
 
     public void ShowNotifications()
     {
-        var closeDelay = 1000;
+        var closeDelay = 1500;
 
         Notification.Show(new NotificationModel()
             {

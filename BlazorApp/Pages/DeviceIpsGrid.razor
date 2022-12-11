@@ -1,0 +1,42 @@
+﻿@page "/DeviceIps/{DeviceId:int}"
+@inject IDeviceIpData deviceIpData
+
+<TelerikGrid Data="deviceIpsList" EditMode="@GridEditMode.Inline" OnEdit="@HandleEdit" OnUpdate="@HandleUpdate">
+    <GridColumns>
+        
+        <GridColumn Field="@nameof(DisplayDeviceIpsModel.IpAddress)"></GridColumn>
+        <GridColumn Field="@nameof(DisplayDeviceIpsModel.MacAddress)"></GridColumn>
+        <GridCommandColumn>
+            <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Update</GridCommandButton>
+            <GridCommandButton Command="Edit" Icon="edit">Edit</GridCommandButton>
+        </GridCommandColumn>
+    </GridColumns>
+</TelerikGrid>
+
+@code {
+    [Parameter]
+    public int DeviceId { get; set; }
+
+    private List<IDeviceIpModel> deviceIpsList;
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        deviceIpsList = await deviceIpData.GetDeviceIps(DeviceId);
+        
+    }
+
+    private void HandleEdit(GridCommandEventArgs args)
+    {
+       
+    }
+
+    private async Task HandleUpdate(GridCommandEventArgs args)
+    {
+        IDeviceIpModel item = (IDeviceIpModel)args.Item;
+        await deviceIpData.UpdateDeviceIp(item);
+        deviceIpsList = await deviceIpData.GetDeviceIps(DeviceId);
+        
+    }
+
+}
