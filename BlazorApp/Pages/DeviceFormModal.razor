@@ -1,6 +1,7 @@
 ﻿@inject IDeviceData deviceData
 @inject IDeviceTypeData deviceTypeData
 
+
 <TelerikWindow Centered="true" @bind-Visible="@WindowVisible" Modal="true" Width="70%" Height="90%">
     <WindowTitle>
         Device Form
@@ -99,6 +100,8 @@
     private IDeviceModel device = new DisplayDeviceModel();
     private List<IDeviceTypeModel> deviceTypes;
 
+
+
     protected override async Task OnParametersSetAsync()
     {
         device = new DisplayDeviceModel();
@@ -107,7 +110,7 @@
         {
             device = await deviceData.GetDeviceById(Id);
         }
-        
+
         deviceTypes = await deviceTypeData.GetDeviceTypes();
 
     }
