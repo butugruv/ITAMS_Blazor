@@ -17,7 +17,7 @@
 else
 {
     <TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu"
-             Resizable="true" ShowColumnMenu="true" Reorderable="true" Groupable="true" @ref="GridRef">
+             Resizable="true" ShowColumnMenu="true" Reorderable="true" Groupable="true" >
         <GridColumns>
             <GridCommandColumn Width="70px" Context="dataItem">
                 <GridCommandButton ThemeColor="primary" Command="EditDevice" OnClick="@( () => HandleEditButtonClick(dataItem as IDevicesWithLookupsModel) )">Edit</GridCommandButton>
@@ -54,7 +54,6 @@ else
     //private ObservableCollection<IDevicesWithLookupsModel> devicesListObserved;
     public bool windowVisible = false;
     private int deviceId;
-    private TelerikGrid<IDevicesWithLookupsModel> GridRef { get; set; }
     public TelerikNotification Notification { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -84,7 +83,7 @@ else
         windowVisible = false;
         deviceList = await deviceData.GetDevicesWithLookups();
         ShowNotifications();
-        //GridRef.Rebind();
+        
     }
 
     public void ShowNotifications()
