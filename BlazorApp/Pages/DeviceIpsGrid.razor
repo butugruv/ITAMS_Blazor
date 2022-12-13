@@ -1,8 +1,8 @@
 ﻿@page "/DeviceIps/{DeviceId:int}"
 @inject IDeviceIpData deviceIpData
 
-<TelerikGrid Data="deviceIpsList" EditMode="@GridEditMode.Inline" OnUpdate="@HandleUpdate" OnCreate="@HandleCreate"
-             Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu"
+<TelerikGrid Data="deviceIpsList" EditMode="@GridEditMode.Inline" OnUpdate="@HandleUpdate" OnCreate="@HandleCreate" OnDelete="@HandleDelete"
+             Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" ConfirmDelete="true"
              ShowColumnMenu="true" Reorderable="true" Groupable="true">
     <GridToolBar>
         <GridCommandButton Command="Add" Icon="add">Add IP</GridCommandButton>
@@ -11,10 +11,11 @@
     <GridColumns>     
         <GridColumn Field="IpAddress" Title="IP Address"></GridColumn>
         <GridColumn Field="MacAddress" Title="MAC Address"></GridColumn>
-        <GridCommandColumn>
-            <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Update</GridCommandButton>
+        <GridCommandColumn>          
             <GridCommandButton Command="Edit" Icon="edit" ThemeColor="primary">Edit</GridCommandButton>
+            <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Update</GridCommandButton>
             <GridCommandButton Command="EditScanGroups">Edit ACAS scan groups</GridCommandButton>
+            <GridCommandButton Command="Delete" ThemeColor="error">Delete</GridCommandButton>           
         </GridCommandColumn>
     </GridColumns>
 </TelerikGrid>
@@ -28,7 +29,6 @@
     protected override async Task OnParametersSetAsync()
     {
         deviceIpsList = await deviceIpData.GetDeviceIps(DeviceId);
-
     }
 
     private async Task HandleUpdate(GridCommandEventArgs args)
@@ -36,7 +36,6 @@
         DeviceIpModel deviceIp = (DeviceIpModel)args.Item;
         await deviceIpData.UpdateDeviceIp(deviceIp);
         deviceIpsList = await deviceIpData.GetDeviceIps(DeviceId);
-
     }
 
     private async Task HandleCreate(GridCommandEventArgs args)
@@ -49,7 +48,9 @@
 
     private async Task HandleDelete(GridCommandEventArgs args)
     {
-        
+        DeviceIpModel deviceIp = (DeviceIpModel)args.Item;
+        await deviceIpData.DeleteDeviceIp(deviceIp.Id);
+        deviceIpsList = await deviceIpData.GetDeviceIps(DeviceId);
     }
 
 }
