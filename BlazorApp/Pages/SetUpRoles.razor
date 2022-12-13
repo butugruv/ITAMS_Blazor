@@ -1,0 +1,38 @@
+﻿@page "/SetUpRoles"
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.Extensions.Configuration
+
+@inject RoleManager<IdentityRole> roleManager
+@inject UserManager<IdentityUser> userManager
+@inject IConfiguration config
+
+
+@code {
+    protected override async Task OnParametersSetAsync()
+    {
+        await SetUpAuth();
+    }
+
+    private async Task SetUpAuth()
+    {
+        const string administrator = "ITAMSAdmin";
+        string[] roles = {"ITAMSAdmin", "ITAMSEdit", "ITAMSView" };
+
+        foreach (var role in roles)
+        {
+            var roleExist = await roleManager.RoleExistsAsync(role);
+
+            if (roleExist == false)
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+
+        var user = await userManager.FindByIdAsync("7165c4ab-a7e6-46e7-b67f-3cfecdc83e07");
+
+        if (user != null)
+        {
+            await userManager.AddToRoleAsync(user, administrator);
+        }
+    }
+}

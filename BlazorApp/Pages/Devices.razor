@@ -6,7 +6,12 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h2>Devices</h2>
     <div class="btn-group me-2">
-        <button type="button" class="btn btn-primary" @onclick="HandleCreateButtonClick">Create Device</button>
+        <AuthorizeView Roles="ITAMSAdmin,ITAMSEdit">
+            <Authorized>
+                <button type="button" class="btn btn-primary" @onclick="HandleCreateButtonClick">Create Device</button>
+            </Authorized>
+        </AuthorizeView>
+        
     </div>
 </div>
 
@@ -17,11 +22,17 @@
 else
 {
     <TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu"
-             Resizable="true" ShowColumnMenu="true" Reorderable="true" Groupable="true" >
+             Resizable="true" ShowColumnMenu="true" Reorderable="true" Groupable="true">
         <GridColumns>
+
             <GridCommandColumn Width="70px" Context="dataItem">
-                <GridCommandButton ThemeColor="primary" Command="EditDevice" OnClick="@( () => HandleEditButtonClick(dataItem as IDevicesWithLookupsModel) )">Edit</GridCommandButton>
+                <AuthorizeView Roles="ITAMSAdmin,ITAMSEdit">
+                    <Authorized>
+                        <GridCommandButton ThemeColor="primary" Command="EditDevice" OnClick="@( () => HandleEditButtonClick(dataItem as IDevicesWithLookupsModel) )">Edit</GridCommandButton>
+                    </Authorized>
+                </AuthorizeView>
             </GridCommandColumn>
+
             <GridColumn Field="DeviceName" Title="Device Name" Width="250px"  />
             <GridColumn Field="DeviceFunction" Width="250px" />
             <GridColumn Field="TypeName" Width="250px" />
