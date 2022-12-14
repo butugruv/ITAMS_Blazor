@@ -1,7 +1,8 @@
 ﻿@page "/Devices/DeviceFormModal/{Id:int}/{WindowVisible:bool}"
+@using Microsoft.AspNetCore.Identity;
 @inject IDeviceData deviceData
 @inject IDeviceTypeData deviceTypeData
-
+@inject UserManager<IdentityUser> userManager
 
 <TelerikWindow Centered="true" @bind-Visible="@WindowVisible" Modal="true" Width="70%" Height="90%">
     <WindowTitle>
@@ -11,7 +12,6 @@
         <WindowAction Name="Close" />
         <WindowAction Name="Maximize" />
     </WindowActions>
-
     <WindowContent>
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h2>Device Details</h2>
@@ -107,10 +107,22 @@
     [Parameter]
     public EventCallback<string> OnSubmitted { get; set; }
 
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
     private IDeviceModel device = new DeviceModel();
     private List<IDeviceTypeModel> deviceTypes;
+    private IdentityUser currentUser;
 
+    protected override async Task OnInitializedAsync()
+    {
+        var user = (await AuthenticationStateTask).User;
 
+        if (user.Identity.IsAuthenticated)
+        {
+            currentUser = await userManager.GetUserAsync(user);
+        }
+    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -136,13 +148,13 @@
         if (Id > 0)
         {
             device.ModifiedDate = DateTime.Now;
-            device.ModifiedBy = "CY";
+            device.ModifiedBy = currentUser.UserName;
             await deviceData.UpdateDevice(device);
         }
         else
         {
             device.CreatedDate = DateTime.Now;
-            device.CreatedBy = "CY";
+            device.CreatedBy = currentUser.UserName;
             await deviceData.CreateDevice(device); 
         }
 
@@ -152,7 +164,7 @@
 
     public void CloseWindow()
     {
-        // doesn't really matter what value is passed back, just mainly use this to create a trigger on the parent component to do stuff from
+        // for this situation, just mainly using this to create a trigger on the parent component to do stuff from
         OnSubmitted.InvokeAsync("submitted");
     }
 }

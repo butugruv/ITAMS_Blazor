@@ -1,4 +1,6 @@
 ﻿@page "/SetUpRoles"
+@attribute [Authorize(Roles = "ITAMSAdmin")]
+
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Extensions.Configuration
 

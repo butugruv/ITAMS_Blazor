@@ -11,7 +11,7 @@
                 <button type="button" class="btn btn-primary" @onclick="HandleCreateButtonClick">Create Device</button>
             </Authorized>
         </AuthorizeView>
-        
+
     </div>
 </div>
 
@@ -22,9 +22,12 @@
 else
 {
     <TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu"
-             Resizable="true" ShowColumnMenu="true" Reorderable="true" Groupable="true">
-        <GridColumns>
+             Resizable="true" ShowColumnMenu="true" Reorderable="true" Groupable="true" PageSize="10">
 
+        <GridToolBar>
+            <GridCommandButton Command="ExcelExport" Icon="file-excel">Export to Excel</GridCommandButton>
+        </GridToolBar>
+        <GridColumns>
             <GridCommandColumn Width="70px" Context="dataItem">
                 <AuthorizeView Roles="ITAMSAdmin,ITAMSEdit">
                     <Authorized>
@@ -33,7 +36,7 @@ else
                 </AuthorizeView>
             </GridCommandColumn>
 
-            <GridColumn Field="DeviceName" Title="Device Name" Width="250px"  />
+            <GridColumn Field="DeviceName" Title="Device Name" Width="250px" />
             <GridColumn Field="DeviceFunction" Width="250px" />
             <GridColumn Field="TypeName" Width="250px" />
             <GridColumn Field="Manufacturer" Width="250px" />
@@ -47,66 +50,16 @@ else
             <GridColumn Field="CreatedBy" Width="250px" />
             <GridColumn Field="ModifiedDate" Width="250px" />
             <GridColumn Field="ModifiedBy" Width="250px" />
-           
+
         </GridColumns>
     </TelerikGrid>
 }
 
 <DeviceFormModal Id="deviceId" WindowVisible="@windowVisible" OnSubmitted="HandleOnSubmitted"></DeviceFormModal>
 
-<TelerikNotification @ref="@Notification"
-                     Class="demo-notification"
-                     VerticalPosition="NotificationVerticalPosition.Bottom"
-                     HorizontalPosition="NotificationHorizontalPosition.Right">
+<TelerikNotification @ref="@Notification" Class="demo-notification" VerticalPosition="NotificationVerticalPosition.Bottom" HorizontalPosition="NotificationHorizontalPosition.Right">
 </TelerikNotification>
 
 @code {
-    private List<IDevicesWithLookupsModel> deviceList;
-    //private ObservableCollection<IDevicesWithLookupsModel> devicesListObserved;
-    public bool windowVisible = false;
-    private int deviceId;
-    public TelerikNotification Notification { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        deviceList = await deviceData.GetDevicesWithLookups();
-        //devicesListObserved = new ObservableCollection<IDevicesWithLookupsModel>(deviceList);
-    }
-
-    private void HandleEditButtonClick(IDevicesWithLookupsModel device)
-    {
-        //int id = (args.Item as IDevicesWithLookupsModel).Id; 
-        //navigationManager.NavigateTo($"Devices/DeviceForm/{id}");
-        deviceId = device.Id;
-        windowVisible = true;
-
-    }
-
-    private void HandleCreateButtonClick()
-    {
-        deviceId = 0;
-        windowVisible = true;
-
-    }
-
-    public async Task HandleOnSubmitted()
-    {
-        windowVisible = false;
-        deviceList = await deviceData.GetDevicesWithLookups();
-        ShowNotifications();
-        
-    }
-
-    public void ShowNotifications()
-    {
-        var closeDelay = 1500;
-
-        Notification.Show(new NotificationModel()
-            {
-                Text = "Device successfully updated",
-                ThemeColor = ThemeConstants.Notification.ThemeColor.Success,
-                CloseAfter = closeDelay
-            });
-    }
-
+    //separated out the code into Devices.cs
 }
