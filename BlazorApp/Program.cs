@@ -35,6 +35,8 @@ namespace BlazorApp
             builder.Services.AddScoped<IDeviceData, DeviceData>();
             builder.Services.AddScoped<IDeviceTypeData, DeviceTypeData>();
             builder.Services.AddScoped<IDeviceIpData, DeviceIpData>();
+            builder.Services.AddScoped<IRmfPackageData, RmfPackageData>();
+            builder.Services.AddScoped<ILocationData, LocationData>();
 
             var app = builder.Build();
 

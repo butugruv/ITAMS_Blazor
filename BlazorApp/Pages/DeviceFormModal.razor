@@ -2,7 +2,10 @@
 @using Microsoft.AspNetCore.Identity;
 @inject IDeviceData deviceData
 @inject IDeviceTypeData deviceTypeData
+@inject IRmfPackageData rmfPackageData
+@inject ILocationData locationData
 @inject UserManager<IdentityUser> userManager
+
 
 <TelerikWindow Centered="true" @bind-Visible="@WindowVisible" Modal="true" Width="70%" Height="90%">
     <WindowTitle>
@@ -57,10 +60,46 @@
                 <FormItem Field="Poc"></FormItem>
                 <FormItem Field="Model"></FormItem>
                 <FormItem Field="ManufacturerId"></FormItem>                          
-                <FormItem Field="LocationId"></FormItem>
-                <FormItem Field="LocationFloorId"></FormItem>
+                @*<FormItem Field="LocationId"></FormItem>*@
+                <FormItem>
+                    <Template>
+                        <label class="mb-2" for="location">Location:</label>
+                        <TelerikDropDownList Data="@locations" TextField="LocationName" ValueField="Id" @bind-Value="@device.LocationId" Id="location" OnChange="@HandleLocationOnChange">
+                            <DropDownListSettings>
+                                <DropDownListPopupSettings Height="auto" />
+                            </DropDownListSettings>
+                        </TelerikDropDownList>
+                    </Template>
+                </FormItem>
+
+
+                @*<FormItem Field="LocationFloorId"></FormItem>*@
+                <FormItem>
+                    <Template>
+                        <label class="mb-2" for="floor">Floor:</label>
+                        <TelerikDropDownList Data="@locationFloors" TextField="Floor" ValueField="Id" @bind-Value="@device.LocationFloorId" Id="floor">
+                            <DropDownListSettings>
+                                <DropDownListPopupSettings Height="auto" />
+                            </DropDownListSettings>
+                        </TelerikDropDownList>
+                    </Template>
+                </FormItem>
+
+
                 <FormItem Field="LocationFloorRoomId"></FormItem>
-                <FormItem Field="RmfPackageId"></FormItem>
+                @*<FormItem Field="RmfPackageId"></FormItem>*@
+                <FormItem>
+                    <Template>
+                        <label class="mb-2" for="rmfPackage">RMF Package:</label>
+                        <TelerikDropDownList Data="@rmfPackages" TextField="PackageName" ValueField="Id" @bind-Value="@device.RmfPackageId" Id="rmfPackage">
+                            <DropDownListSettings>
+                                <DropDownListPopupSettings Height="auto" />
+                            </DropDownListSettings>
+                        </TelerikDropDownList>
+                    </Template>
+                </FormItem>
+
+
                 <FormItem Field="NetworkId"></FormItem>
                 @if (Id > 0)
                 {
@@ -112,6 +151,9 @@
 
     private IDeviceModel device = new DeviceModel();
     private List<DeviceTypeModel> deviceTypes;
+    private List<RmfPackageModel> rmfPackages;
+    private List<LocationModel> locations;
+    private List<LocationFloorModel> locationFloors;
     private IdentityUser currentUser;
 
     protected override async Task OnInitializedAsync()
@@ -126,8 +168,6 @@
 
     protected override async Task OnParametersSetAsync()
     {
-
-
         if (Id > 0)
         {
             device = await deviceData.GetDeviceById(Id);
@@ -138,13 +178,12 @@
         }
 
         deviceTypes = await deviceTypeData.GetDeviceTypes();
-
+        rmfPackages = await rmfPackageData.GetRmfPackages();
+        locations = await locationData.GetLocations();
     }
 
     private async Task HandleValidSubmit()
     {
-
-
         if (Id > 0)
         {
             device.ModifiedDate = DateTime.Now;
@@ -166,5 +205,10 @@
     {
         // for this situation, just mainly using this to create a trigger on the parent component to do stuff from
         OnSubmitted.InvokeAsync("submitted");
+    }
+
+    private async void HandleLocationOnChange(object newValue)
+    {
+        locationFloors = await locationData.GetLocationFloors((int)newValue);
     }
 }
