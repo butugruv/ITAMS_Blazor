@@ -44,7 +44,7 @@ namespace BlazorApp.Pages
 
         public void ShowNotifications()
         {
-            var closeDelay = 1500;
+            var closeDelay = 2500;
 
             Notification.Show(new NotificationModel()
             {

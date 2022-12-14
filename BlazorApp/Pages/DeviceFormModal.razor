@@ -111,7 +111,7 @@
     private Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
     private IDeviceModel device = new DeviceModel();
-    private List<IDeviceTypeModel> deviceTypes;
+    private List<DeviceTypeModel> deviceTypes;
     private IdentityUser currentUser;
 
     protected override async Task OnInitializedAsync()

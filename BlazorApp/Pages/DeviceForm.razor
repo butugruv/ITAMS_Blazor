@@ -80,7 +80,7 @@
     public EventCallback<string> OnSubmitted { get; set; }
 
     private IDeviceModel device = new DisplayDeviceModel();
-    private List<IDeviceTypeModel> deviceTypes;
+    private List<DeviceTypeModel> deviceTypes;
 
     protected override async Task OnParametersSetAsync()
     {
