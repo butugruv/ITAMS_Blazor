@@ -1,0 +1,59 @@
+﻿@page "/Lists/RmfPackages"
+@inject IRmfPackageData rmfPackageData
+
+<PageTitle>RMF Packages</PageTitle>
+
+<h2 class="border-bottom pt-3 pb-2 mb-3">
+    <NavLink href="Lists">Lists</NavLink> > RMF Packages
+</h2>
+
+<TelerikGrid Data="rmfPackageList" EditMode="@GridEditMode.Inline"
+             OnUpdate="@HandleUpdate" OnCreate="@HandleCreate" OnDelete="@HandleDelete"
+             Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" ConfirmDelete="true"
+             ShowColumnMenu="true" Reorderable="true" Groupable="true">
+
+    <GridToolBar>
+        <GridCommandButton Command="Add" Icon="add">Add RMF Package</GridCommandButton>
+        <GridCommandButton Command="ExcelExport" Icon="file-excel">Export to Excel</GridCommandButton>
+    </GridToolBar>
+
+    <GridColumns>
+        <GridColumn Field="PackageName" Title="Package Name"></GridColumn>
+        <GridColumn Field="PackageDescription" Title="Package Description"></GridColumn>
+        <GridCommandColumn>
+            <GridCommandButton Command="Edit" Icon="edit" ThemeColor="primary">Edit</GridCommandButton>
+            <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Apply Changes</GridCommandButton>
+            <GridCommandButton Command="Delete" ThemeColor="error">Delete</GridCommandButton>
+        </GridCommandColumn>
+    </GridColumns>
+</TelerikGrid>
+
+@code {
+    private List<RmfPackageModel> rmfPackageList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        rmfPackageList = await rmfPackageData.GetRmfPackages();
+    }
+
+    private async Task HandleUpdate(GridCommandEventArgs args)
+    {
+        RmfPackageModel rmfPackage = (RmfPackageModel)args.Item;
+        await rmfPackageData.UpdateRmfPackage(rmfPackage);
+        rmfPackageList = await rmfPackageData.GetRmfPackages();
+    }
+
+    private async Task HandleCreate(GridCommandEventArgs args)
+    {
+        RmfPackageModel rmfPackage = (RmfPackageModel)args.Item;
+        await rmfPackageData.CreateRmfPackage(rmfPackage);
+        rmfPackageList = await rmfPackageData.GetRmfPackages();
+    }
+
+    private async Task HandleDelete(GridCommandEventArgs args)
+    {
+        RmfPackageModel rmfPackage = (RmfPackageModel)args.Item;
+        await rmfPackageData.DeleteRmfPackage(rmfPackage.Id);
+        rmfPackageList = await rmfPackageData.GetRmfPackages();
+    }
+}

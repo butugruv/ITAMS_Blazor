@@ -3,6 +3,8 @@
 @inject IDeviceData deviceData
 @inject NavigationManager navigationManager
 
+<PageTitle>Devices</PageTitle>
+
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h2>Devices</h2>
     <div class="btn-group me-2">
@@ -37,15 +39,15 @@ else
             </GridCommandColumn>
 
             <GridColumn Field="DeviceName" Title="Device Name" Width="250px" />
-            <GridColumn Field="DeviceFunction" Width="250px" />
-            <GridColumn Field="TypeName" Width="250px" />
+            <GridColumn Field="DeviceFunction" Width="250px" Title="Device Function" />
+            <GridColumn Field="TypeName" Width="250px" Title="Device Type" />
             <GridColumn Field="Manufacturer" Width="250px" />
             <GridColumn Field="Model" Width="250px" />
             <GridColumn Field="Poc" Width="250px" />
             <GridColumn Field="LocationName" Width="250px" />
             <GridColumn Field="Floor" Width="250px" />
             <GridColumn Field="Room" Width="250px" />
-            <GridColumn Field="PackageName" Width="250px" />
+            <GridColumn Field="PackageName" Width="250px" Title="RMF Package"/>
             <GridColumn Field="CreatedDate" Width="250px" />
             <GridColumn Field="CreatedBy" Width="250px" />
             <GridColumn Field="ModifiedDate" Width="250px" />
