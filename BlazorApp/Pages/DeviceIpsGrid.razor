@@ -5,7 +5,7 @@
              Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" ConfirmDelete="true"
              ShowColumnMenu="true" Reorderable="true" Groupable="true">
     <GridToolBar>
-        <GridCommandButton Command="Add" Icon="add">Add IP</GridCommandButton>
+        <GridCommandButton Command="Add" Icon="add" ThemeColor="primary">Add IP</GridCommandButton>
         <GridCommandButton Command="ExcelExport" Icon="file-excel">Export to Excel</GridCommandButton>
     </GridToolBar>
 
@@ -15,7 +15,7 @@
         <GridCommandColumn>          
             <GridCommandButton Command="Edit" Icon="edit" ThemeColor="primary">Edit</GridCommandButton>
             <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Apply Changes</GridCommandButton>
-            <GridCommandButton Command="EditScanGroups">Edit ACAS scan groups</GridCommandButton>
+            <GridCommandButton Command="EditScanGroups" ThemeColor="info">Edit ACAS scan groups</GridCommandButton>
             <GridCommandButton Command="Delete" ThemeColor="error">Delete</GridCommandButton>           
         </GridCommandColumn>
     </GridColumns>
