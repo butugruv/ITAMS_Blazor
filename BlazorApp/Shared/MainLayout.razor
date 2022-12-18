@@ -53,31 +53,51 @@
                         <span class="oi oi-laptop" aria-hidden="true"></span> Devices
                         </NavLink>
                     </li>  
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="Software">
-                            <span class="oi oi-media-play" aria-hidden="true"></span> Software
-                        </NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="StorageDrives">
-                            <span class="oi oi-box" aria-hidden="true"></span> Storage Drives
-                        </NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="ACASIpDeltas">
-                            <span class="oi oi-shield" aria-hidden="true"></span> ACAS IP Deltas
-                        </NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="Lists">
-                            <span class="oi oi-list-rich" aria-hidden="true"></span> Lists
-                        </NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="Reports">
-                            <span class="oi oi-graph" aria-hidden="true"></span> Reports
-                        </NavLink>
-                    </li>
+                    <AuthorizeView>
+                        <Authorized>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="Software">
+                                    <span class="oi oi-media-play" aria-hidden="true"></span> Software
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="StorageDrives">
+                                    <span class="oi oi-box" aria-hidden="true"></span> Storage Drives
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="Subnets">
+                                    <span class="oi oi-box" aria-hidden="true"></span> Subnets
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="Systems">
+                                    <span class="oi oi-box" aria-hidden="true"></span> Systems
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="CI">
+                                    <span class="oi oi-box" aria-hidden="true"></span> Configuration Items
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="ACASIpDeltas">
+                                    <span class="oi oi-shield" aria-hidden="true"></span> ACAS IP Deltas
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="Lists">
+                                    <span class="oi oi-list-rich" aria-hidden="true"></span> Lists
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="Reports">
+                                    <span class="oi oi-graph" aria-hidden="true"></span> Reports
+                                </NavLink>
+                            </li>
+                        </Authorized>
+                    </AuthorizeView>
+                    
                     <AuthorizeView Roles="ITAMSAdmin">
                         <Authorized>
                             <li class="nav-item">

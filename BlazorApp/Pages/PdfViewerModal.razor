@@ -1,0 +1,29 @@
+﻿@inject IDeviceData deviceData
+
+<TelerikWindow Centered="true" @bind-Visible="@WindowVisible" Width="80%" Height="80%">
+    <WindowTitle>
+        PDF Viewer
+    </WindowTitle>
+    <WindowActions>
+        <WindowAction Name="Close" />
+        <WindowAction Name="Maximize" />
+    </WindowActions>
+    <WindowContent>
+        <TelerikPdfViewer Height="600px" Data="@Data"></TelerikPdfViewer>
+    </WindowContent>
+</TelerikWindow>
+
+
+
+@code {
+
+
+    [Parameter]
+    public bool WindowVisible { get; set; }
+
+    [Parameter]
+    public byte[] Data { get; set; }
+
+
+
+}

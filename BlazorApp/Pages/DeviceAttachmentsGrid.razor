@@ -1,0 +1,76 @@
+﻿@inject IDeviceData deviceData
+@inject IJSRuntime JS
+
+<TelerikFileSelect OnSelect="HandleAttachmentSelect"/>
+
+<TelerikGrid Data="deviceAttachmentsList" ConfirmDelete="true" Resizable="true"
+             Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu">
+    <GridToolBar>
+        <GridSearchBox Width="300px;"/>
+    </GridToolBar>
+
+    <GridColumns>
+        <GridColumn Field="FileName"></GridColumn>
+        <GridColumn Field="CreatedDate"></GridColumn>
+        <GridColumn Field="FileType"></GridColumn>
+        <GridCommandColumn Context="dataItem">
+            <GridCommandButton Command="primary" Size="Small" OnClick="@( () => DownloadFileFromStream(dataItem as DeviceAttachment) )">Download</GridCommandButton>
+            
+            <GridCommandButton Command="ViewInBrowser" Size="Small" ThemeColor="info" 
+                               OnClick="@( () => HandleViewInBrowserButtonClick(dataItem as DeviceAttachment) )">View in Browser</GridCommandButton>
+            <GridCommandButton Command="Delete" Size="Small" ThemeColor="error">Delete</GridCommandButton>
+        </GridCommandColumn>
+    </GridColumns>
+</TelerikGrid>
+
+<PdfViewerModal WindowVisible="@windowVisible" Data="@data"></PdfViewerModal>
+
+@code {
+    [Parameter]
+    public int DeviceId { get; set; }
+
+    private List<DeviceAttachment> deviceAttachmentsList;
+    public bool windowVisible = false;
+    public byte[] data;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        deviceAttachmentsList = await deviceData.GetDeviceAttachments(DeviceId);
+    }
+
+    private async Task HandleAttachmentSelect(FileSelectEventArgs args)
+    {
+        foreach (var file in args.Files)
+        {
+            var buffer = new byte[file.Stream.Length];
+            await file.Stream.ReadAsync(buffer);
+            await deviceData.CreateDeviceAttachment(file.Name, buffer, DeviceId);
+        }
+
+        deviceAttachmentsList = await deviceData.GetDeviceAttachments(DeviceId);
+
+    }
+
+    private void HandleViewInBrowserButtonClick(DeviceAttachment deviceAttachment)
+    {
+        windowVisible = true;
+        data = deviceAttachment.FileStream;
+        
+    }
+
+    private Stream GetFileStream(byte[] bytes)
+    {
+        var fileStream = new MemoryStream(bytes);
+        return fileStream;
+    }
+
+    private async Task DownloadFileFromStream(DeviceAttachment deviceAttachment)
+    {
+        var fileStream = GetFileStream(deviceAttachment.FileStream);
+
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+        await JS.InvokeVoidAsync("downloadFileFromStream", deviceAttachment.FileName, streamRef);
+
+    }
+}

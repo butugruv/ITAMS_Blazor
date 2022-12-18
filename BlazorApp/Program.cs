@@ -4,6 +4,7 @@ using ITAMS_DAL.Data;
 using ITAMS_DAL.DataAccess;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp
@@ -38,6 +39,10 @@ namespace BlazorApp
             builder.Services.AddScoped<IRmfPackageData, RmfPackageData>();
             builder.Services.AddScoped<ILocationData, LocationData>();
 
+            builder.Services.Configure<HubOptions>(options =>
+            {
+                options.MaximumReceiveMessageSize = 1024 * 1024;
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

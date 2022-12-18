@@ -38,17 +38,24 @@ namespace BlazorApp.Pages
         {
             windowVisible = false;
             deviceList = await deviceData.GetDevicesWithLookups();
-            ShowNotifications();
+
+            if (deviceId > 0)
+            {
+                ShowNotifications();
+            }
+
 
         }
 
         public void ShowNotifications()
         {
-            var closeDelay = 2500;
+            var closeDelay = 3000;
+            // using LINQ to filter the list instead of calling the database sproc
+            var device = deviceList.Where(d => d.Id == deviceId).FirstOrDefault();
 
             Notification.Show(new NotificationModel()
             {
-                Text = "Device successfully updated",
+                Text = $"Device {device.DeviceName} successfully updated",
                 ThemeColor = ThemeConstants.Notification.ThemeColor.Success,
                 CloseAfter = closeDelay
             });

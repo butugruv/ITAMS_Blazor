@@ -27,6 +27,7 @@ else
              Resizable="true" ShowColumnMenu="true" Reorderable="true" Groupable="true" PageSize="10">
 
         <GridToolBar>
+            <GridSearchBox Width="300px;"/>
             <GridCommandButton Command="ExcelExport" Icon="file-excel">Export to Excel</GridCommandButton>
         </GridToolBar>
         <GridColumns>
@@ -38,6 +39,7 @@ else
                 </AuthorizeView>
             </GridCommandColumn>
 
+            
             <GridColumn Field="DeviceName" Title="Device Name" Width="250px" />
             <GridColumn Field="DeviceFunction" Width="250px" Title="Device Function" />
             <GridColumn Field="TypeName" Width="250px" Title="Device Type" />

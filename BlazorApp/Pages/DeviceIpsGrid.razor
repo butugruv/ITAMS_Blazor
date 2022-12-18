@@ -2,21 +2,22 @@
 @inject IDeviceIpData deviceIpData
 
 <TelerikGrid Data="deviceIpsList" EditMode="@GridEditMode.Inline" OnUpdate="@HandleUpdate" OnCreate="@HandleCreate" OnDelete="@HandleDelete"
-             Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" ConfirmDelete="true"
+             Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" ConfirmDelete="true" Resizable="true"
              ShowColumnMenu="true" Reorderable="true" Groupable="true">
     <GridToolBar>
+        <GridSearchBox Width="300px;" />
         <GridCommandButton Command="Add" Icon="add" ThemeColor="primary">Add IP</GridCommandButton>
         <GridCommandButton Command="ExcelExport" Icon="file-excel">Export to Excel</GridCommandButton>
     </GridToolBar>
 
     <GridColumns>     
-        <GridColumn Field="IpAddress" Title="IP Address"></GridColumn>
-        <GridColumn Field="MacAddress" Title="MAC Address"></GridColumn>
+        <GridColumn Field="IpAddress" Title="IP Address" ></GridColumn>
+        <GridColumn Field="MacAddress" Title="MAC Address" ></GridColumn>
         <GridCommandColumn>          
-            <GridCommandButton Command="Edit" Icon="edit" ThemeColor="primary">Edit</GridCommandButton>
-            <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Apply Changes</GridCommandButton>
-            <GridCommandButton Command="EditScanGroups" ThemeColor="info">Edit ACAS scan groups</GridCommandButton>
-            <GridCommandButton Command="Delete" ThemeColor="error">Delete</GridCommandButton>           
+            <GridCommandButton Command="Edit" Icon="edit" ThemeColor="primary" Size="Small">Edit</GridCommandButton>
+            <GridCommandButton Command="Save" Icon="save" ShowInEdit="true" Size="Small">Apply Changes</GridCommandButton>
+            <GridCommandButton Command="EditScanGroups" ThemeColor="info" Size="Small">Edit ACAS scan groups</GridCommandButton>
+            <GridCommandButton Command="Delete" ThemeColor="error" Size="Small">Delete</GridCommandButton>
         </GridCommandColumn>
     </GridColumns>
 </TelerikGrid>
