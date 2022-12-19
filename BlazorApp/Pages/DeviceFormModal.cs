@@ -24,6 +24,7 @@ namespace BlazorApp.Pages
         private List<RmfPackageModel> rmfPackages;
         private List<LocationModel> locations;
         private List<LocationFloorModel> locationFloors;
+        private List<NetworkModel> networks;
         private IdentityUser currentUser;
 
         protected override async Task OnInitializedAsync()
@@ -49,7 +50,11 @@ namespace BlazorApp.Pages
 
             deviceTypes = await deviceTypeData.GetDeviceTypes();
             rmfPackages = await rmfPackageData.GetRmfPackages();
+            networks = await networkData.GetNetworks();
             locations = await locationData.GetLocations();
+
+            // populate cascading lists
+            locationFloors = await locationData.GetLocationFloors(device.LocationId);
         }
 
         private async Task HandleValidSubmit()

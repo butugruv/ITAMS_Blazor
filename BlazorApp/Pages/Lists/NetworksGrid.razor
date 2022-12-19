@@ -1,0 +1,60 @@
+﻿@page "/Lists/Networks"
+@inject INetworkData networkData
+
+<PageTitle>Networks</PageTitle>
+
+<h2 class="border-bottom pt-3 pb-2 mb-3">
+    <NavLink href="Lists">Lists</NavLink> > Networks
+</h2>
+
+<TelerikGrid Data="networkList" EditMode="@GridEditMode.Inline"
+             OnUpdate="@HandleUpdate" OnCreate="@HandleCreate" OnDelete="@HandleDelete"
+             Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" ConfirmDelete="true"
+             ShowColumnMenu="true" Reorderable="true" Groupable="true">
+
+    <GridToolBar>
+        <GridSearchBox Width="300px;" />
+        <GridCommandButton Command="Add" Icon="add">Add Network</GridCommandButton>
+        <GridCommandButton Command="ExcelExport" Icon="file-excel">Export to Excel</GridCommandButton>
+    </GridToolBar>
+
+    <GridColumns>
+        <GridColumn Field="NetworkName" Title="Network Name"></GridColumn>
+        <GridColumn Field="Description" Title="Description"></GridColumn>
+        <GridCommandColumn>
+            <GridCommandButton Command="Edit" Icon="edit" ThemeColor="primary">Edit</GridCommandButton>
+            <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Apply Changes</GridCommandButton>
+            <GridCommandButton Command="Delete" ThemeColor="error">Delete</GridCommandButton>
+        </GridCommandColumn>
+    </GridColumns>
+</TelerikGrid>
+
+@code {
+    private List<NetworkModel> networkList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        networkList = await networkData.GetNetworks();
+    }
+
+    private async Task HandleUpdate(GridCommandEventArgs args)
+    {
+        NetworkModel network = (NetworkModel)args.Item;
+        await networkData.UpdateNetwork(network);
+        networkList = await networkData.GetNetworks();
+    }
+
+    private async Task HandleCreate(GridCommandEventArgs args)
+    {
+        NetworkModel network = (NetworkModel)args.Item;
+        await networkData.CreateNetwork(network);
+        networkList = await networkData.GetNetworks();
+    }
+
+    private async Task HandleDelete(GridCommandEventArgs args)
+    {
+        NetworkModel network = (NetworkModel)args.Item;
+        await networkData.DeleteNetwork(network.Id);
+        networkList = await networkData.GetNetworks();
+    }
+}

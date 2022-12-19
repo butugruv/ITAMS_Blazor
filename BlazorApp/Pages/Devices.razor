@@ -39,21 +39,22 @@ else
                 </AuthorizeView>
             </GridCommandColumn>
 
-            
+            <GridColumn Field="Id" Width="100px"/>
             <GridColumn Field="DeviceName" Title="Device Name" Width="250px" />
             <GridColumn Field="DeviceFunction" Width="250px" Title="Device Function" />
-            <GridColumn Field="TypeName" Width="250px" Title="Device Type" />
-            <GridColumn Field="Manufacturer" Width="250px" />
+            <GridColumn Field="TypeName" Width="150px" Title="Device Type" />
+            <GridColumn Field="Manufacturer" Width="200px" />
             <GridColumn Field="Model" Width="250px" />
-            <GridColumn Field="Poc" Width="250px" />
-            <GridColumn Field="LocationName" Width="250px" />
-            <GridColumn Field="Floor" Width="250px" />
-            <GridColumn Field="Room" Width="250px" />
-            <GridColumn Field="PackageName" Width="250px" Title="RMF Package"/>
-            <GridColumn Field="CreatedDate" Width="250px" />
-            <GridColumn Field="CreatedBy" Width="250px" />
-            <GridColumn Field="ModifiedDate" Width="250px" />
-            <GridColumn Field="ModifiedBy" Width="250px" />
+            <GridColumn Field="Poc" Width="250px" Title="POC"/>
+            <GridColumn Field="LocationName" Width="150px" Title="Location"/>
+            <GridColumn Field="Floor" Width="150px" />
+            <GridColumn Field="Room" Width="150px" />
+            <GridColumn Field="NetworkName" Width="150px" Title="Network" />
+            <GridColumn Field="PackageName" Width="150px" Title="RMF Package" />
+            <GridColumn Field="CreatedDate" Width="150px" Title="Created Date" />
+            <GridColumn Field="CreatedBy" Width="150px" Title="Created By"/>
+            <GridColumn Field="ModifiedDate" Width="150px" Title="Modified Date" />
+            <GridColumn Field="ModifiedBy" Width="150px" Title="Modified By" />
 
         </GridColumns>
     </TelerikGrid>
@@ -61,9 +62,4 @@ else
 
 <DeviceFormModal Id="deviceId" WindowVisible="@windowVisible" OnSubmitted="HandleOnSubmitted"></DeviceFormModal>
 
-<TelerikNotification @ref="@Notification" Class="demo-notification" VerticalPosition="NotificationVerticalPosition.Bottom" HorizontalPosition="NotificationHorizontalPosition.Right">
-</TelerikNotification>
-
-@code {
-    //separated out the code into Devices.cs
-}
+<TelerikNotification @ref="@Notification" Class="demo-notification" VerticalPosition="NotificationVerticalPosition.Bottom" HorizontalPosition="NotificationHorizontalPosition.Right" />

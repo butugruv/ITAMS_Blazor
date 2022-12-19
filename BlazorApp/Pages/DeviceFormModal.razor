@@ -4,6 +4,7 @@
 @inject IDeviceTypeData deviceTypeData
 @inject IRmfPackageData rmfPackageData
 @inject ILocationData locationData
+@inject INetworkData networkData
 @inject UserManager<IdentityUser> userManager
 
 
@@ -60,7 +61,7 @@
                 <FormItem Field="Poc"></FormItem>
                 <FormItem Field="Model"></FormItem>
                 <FormItem Field="ManufacturerId"></FormItem>                          
-                @*<FormItem Field="LocationId"></FormItem>*@
+                
                 <FormItem>
                     <Template>
                         <label class="mb-2" for="location">Location:</label>
@@ -71,9 +72,7 @@
                         </TelerikDropDownList>
                     </Template>
                 </FormItem>
-
-
-                @*<FormItem Field="LocationFloorId"></FormItem>*@
+               
                 <FormItem>
                     <Template>
                         <label class="mb-2" for="floor">Floor:</label>
@@ -85,9 +84,8 @@
                     </Template>
                 </FormItem>
 
-
                 <FormItem Field="LocationFloorRoomId"></FormItem>
-                @*<FormItem Field="RmfPackageId"></FormItem>*@
+                
                 <FormItem>
                     <Template>
                         <label class="mb-2" for="rmfPackage">RMF Package:</label>
@@ -99,8 +97,18 @@
                     </Template>
                 </FormItem>
 
+                @*<FormItem Field="NetworkId"></FormItem>*@
+                <FormItem>
+                    <Template>
+                        <label class="mb-2" for="network">Network:</label>
+                        <TelerikDropDownList Data="@networks" TextField="NetworkName" ValueField="Id" @bind-Value="@device.NetworkId" Id="network">
+                            <DropDownListSettings>
+                                <DropDownListPopupSettings Height="auto" />
+                            </DropDownListSettings>
+                        </TelerikDropDownList>
+                    </Template>
+                </FormItem>
 
-                <FormItem Field="NetworkId"></FormItem>
                 @if (Id > 0)
                 {
                     <FormItem Field="CreatedDate" Enabled="false"></FormItem>
@@ -116,8 +124,7 @@
                 </FormItem>
             </FormItems>
 
-            <FormButtons>
-            </FormButtons>
+            <FormButtons></FormButtons>
         </TelerikForm>
 
 

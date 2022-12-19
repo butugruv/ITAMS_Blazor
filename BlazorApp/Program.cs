@@ -38,6 +38,7 @@ namespace BlazorApp
             builder.Services.AddScoped<IDeviceIpData, DeviceIpData>();
             builder.Services.AddScoped<IRmfPackageData, RmfPackageData>();
             builder.Services.AddScoped<ILocationData, LocationData>();
+            builder.Services.AddScoped<INetworkData, NetworkData>();
 
             builder.Services.Configure<HubOptions>(options =>
             {
