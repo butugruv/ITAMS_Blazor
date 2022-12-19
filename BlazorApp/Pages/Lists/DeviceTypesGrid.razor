@@ -1,4 +1,5 @@
 ﻿@page "/Lists/DeviceTypes"
+@inject IDeviceTypeData deviceTypeData
 
 <PageTitle>Device Types</PageTitle>
 
@@ -6,7 +7,34 @@
     <NavLink href="Lists">Lists</NavLink> > Device Types
 </h2>
 
+<TelerikGrid Data="deviceTypeList" EditMode="@GridEditMode.Inline"
+             
+             Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" ConfirmDelete="true"
+             ShowColumnMenu="true" Reorderable="true" Groupable="true">
+
+    <GridToolBar>
+        <GridSearchBox Width="300px;" />
+        <GridCommandButton Command="Add" Icon="add">Add Device Type</GridCommandButton>
+        <GridCommandButton Command="ExcelExport" Icon="file-excel">Export to Excel</GridCommandButton>
+    </GridToolBar>
+
+    <GridColumns>
+        <GridColumn Field="TypeName" Title="Type Name"></GridColumn>
+        <GridColumn Field="TypeDescription" Title="Description"></GridColumn>
+        <GridCommandColumn>
+            <GridCommandButton Command="Edit" Icon="edit" ThemeColor="primary">Edit</GridCommandButton>
+            <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Apply Changes</GridCommandButton>
+            <GridCommandButton Command="Delete" ThemeColor="error">Delete</GridCommandButton>
+        </GridCommandColumn>
+    </GridColumns>
+</TelerikGrid>
 
 @code {
-   
+    private List<DeviceTypeModel> deviceTypeList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        deviceTypeList = await deviceTypeData.GetDeviceTypes();
+    }
+
 }

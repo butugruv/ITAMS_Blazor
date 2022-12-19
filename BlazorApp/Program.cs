@@ -42,7 +42,8 @@ namespace BlazorApp
 
             builder.Services.Configure<HubOptions>(options =>
             {
-                options.MaximumReceiveMessageSize = 1024 * 1024;
+                // 10 MB size limit
+                options.MaximumReceiveMessageSize = 10 * 1024 * 1024;
             });
             var app = builder.Build();
 
