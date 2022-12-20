@@ -34,31 +34,49 @@ namespace BlazorApp.Pages
 
         }
 
-        public async Task HandleOnSubmitted()
+        public async Task HandleOnSubmitted(string result)
         {
             windowVisible = false;
             deviceList = await deviceData.GetDevicesWithLookups();
 
-            if (deviceId > 0)
-            {
-                ShowNotifications();
-            }
-
-
+            ShowNotifications(result);
         }
 
-        public void ShowNotifications()
+        public void ShowNotifications(string result)
         {
             var closeDelay = 3000;
             // using LINQ to filter the list instead of calling the database sproc
             var device = deviceList.Where(d => d.Id == deviceId).FirstOrDefault();
 
-            Notification.Show(new NotificationModel()
+            switch (result)
             {
-                Text = $"Device {device.DeviceName} successfully updated",
-                ThemeColor = ThemeConstants.Notification.ThemeColor.Success,
-                CloseAfter = closeDelay
-            });
+                case "create":
+                    Notification.Show(new NotificationModel()
+                    {
+                        Text = $"Device successfully created",
+                        ThemeColor = ThemeConstants.Notification.ThemeColor.Success,
+                        CloseAfter = closeDelay
+                    });
+                    break;
+
+                case "save":
+                    Notification.Show(new NotificationModel()
+                    {
+                        Text = $"Device {device.DeviceName} successfully updated",
+                        ThemeColor = ThemeConstants.Notification.ThemeColor.Success,
+                        CloseAfter = closeDelay
+                    });
+                    break;
+                case "delete":
+                    Notification.Show(new NotificationModel()
+                    {
+                        Text = $"Device successfully deleted",
+                        ThemeColor = ThemeConstants.Notification.ThemeColor.Success,
+                        CloseAfter = closeDelay
+                    });
+                    break;
+            }
+
         }
     }
 }

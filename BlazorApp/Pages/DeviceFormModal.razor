@@ -23,7 +23,7 @@
                 @if (Id > 0)
                 {
                     <button type="submit" class="btn btn-primary" form="form">Save</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-danger" @onclick="HandleDeleteOnClick">Delete</button>
                 }
                 else
                 {
@@ -32,100 +32,107 @@
 
             </div>
         </div>
-
-        <TelerikForm Model="@device" Columns="2" ColumnSpacing="25px" ValidationMessageType="@FormValidationMessageType.Tooltip"
+        @if(device != null)
+        {
+            <TelerikForm Model="@device" Columns="2" ColumnSpacing="25px" ValidationMessageType="@FormValidationMessageType.Tooltip"
                      Id="form" OnValidSubmit="HandleValidSubmit">
-            <FormValidation>
-                <DataAnnotationsValidator></DataAnnotationsValidator>
-            </FormValidation>
+                <FormValidation>
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                </FormValidation>
 
-            <FormItems>
-                @if (Id > 0)
-                {
-                    <FormItem Field="Id" Enabled="false"></FormItem>
-                }
+                <FormItems>
+                    @if (Id > 0)
+                    {
+                        <FormItem Field="Id" Enabled="false"></FormItem>
+                    }
 
-                <FormItem Field="DeviceName"></FormItem>
+                    <FormItem Field="DeviceName"></FormItem>
 
-                <FormItem>
-                    <Template>
-                        <label class="mb-2" for="deviceType">Device Type:</label>
-                        <TelerikDropDownList Data="@deviceTypes" TextField="TypeName" ValueField="Id" @bind-Value="@device.DeviceTypeId" Id="deviceType">
-                            <DropDownListSettings>
-                                <DropDownListPopupSettings Height="auto" />
-                            </DropDownListSettings>
-                        </TelerikDropDownList>
-                    </Template>
-                </FormItem>
+                    <FormItem>
+                        <Template>
+                            <label class="mb-2" for="deviceType">Device Type:</label>
+                            <TelerikDropDownList Data="@deviceTypes" TextField="TypeName" ValueField="Id" @bind-Value="@device.DeviceTypeId" Id="deviceType">
+                                <DropDownListSettings>
+                                    <DropDownListPopupSettings Height="auto" />
+                                </DropDownListSettings>
+                            </TelerikDropDownList>
+                        </Template>
+                    </FormItem>
 
-                <FormItem Field="Poc"></FormItem>
-                <FormItem Field="Model"></FormItem>
-                <FormItem Field="ManufacturerId"></FormItem>                          
-                
-                <FormItem>
-                    <Template>
-                        <label class="mb-2" for="location">Location:</label>
-                        <TelerikDropDownList Data="@locations" TextField="LocationName" ValueField="Id" @bind-Value="@device.LocationId" Id="location" OnChange="@HandleLocationOnChange">
-                            <DropDownListSettings>
-                                <DropDownListPopupSettings Height="auto" />
-                            </DropDownListSettings>
-                        </TelerikDropDownList>
-                    </Template>
-                </FormItem>
-               
-                <FormItem>
-                    <Template>
-                        <label class="mb-2" for="floor">Floor:</label>
-                        <TelerikDropDownList Data="@locationFloors" TextField="Floor" ValueField="Id" @bind-Value="@device.LocationFloorId" Id="floor">
-                            <DropDownListSettings>
-                                <DropDownListPopupSettings Height="auto" />
-                            </DropDownListSettings>
-                        </TelerikDropDownList>
-                    </Template>
-                </FormItem>
+                    <FormItem Field="Poc"></FormItem>
+                    <FormItem Field="Model"></FormItem>
+                    <FormItem Field="ManufacturerId"></FormItem>
 
-                <FormItem Field="LocationFloorRoomId"></FormItem>
-                
-                <FormItem>
-                    <Template>
-                        <label class="mb-2" for="rmfPackage">RMF Package:</label>
-                        <TelerikDropDownList Data="@rmfPackages" TextField="PackageName" ValueField="Id" @bind-Value="@device.RmfPackageId" Id="rmfPackage">
-                            <DropDownListSettings>
-                                <DropDownListPopupSettings Height="auto" />
-                            </DropDownListSettings>
-                        </TelerikDropDownList>
-                    </Template>
-                </FormItem>
+                    <FormItem>
+                        <Template>
+                            <label class="mb-2" for="location">Location:</label>
+                            <TelerikDropDownList Data="@locations" TextField="LocationName" ValueField="Id" @bind-Value="@device.LocationId" Id="location" OnChange="@HandleLocationOnChange">
+                                <DropDownListSettings>
+                                    <DropDownListPopupSettings Height="auto" />
+                                </DropDownListSettings>
+                            </TelerikDropDownList>
+                        </Template>
+                    </FormItem>
 
-                @*<FormItem Field="NetworkId"></FormItem>*@
-                <FormItem>
-                    <Template>
-                        <label class="mb-2" for="network">Network:</label>
-                        <TelerikDropDownList Data="@networks" TextField="NetworkName" ValueField="Id" @bind-Value="@device.NetworkId" Id="network">
-                            <DropDownListSettings>
-                                <DropDownListPopupSettings Height="auto" />
-                            </DropDownListSettings>
-                        </TelerikDropDownList>
-                    </Template>
-                </FormItem>
+                    <FormItem>
+                        <Template>
+                            <label class="mb-2" for="floor">Floor:</label>
+                            <TelerikDropDownList Data="@locationFloors" TextField="Floor" ValueField="Id" @bind-Value="@device.LocationFloorId" Id="floor">
+                                <DropDownListSettings>
+                                    <DropDownListPopupSettings Height="auto" />
+                                </DropDownListSettings>
+                            </TelerikDropDownList>
+                        </Template>
+                    </FormItem>
 
-                @if (Id > 0)
-                {
-                    <FormItem Field="CreatedDate" Enabled="false"></FormItem>
-                    <FormItem Field="CreatedBy" Enabled="false"></FormItem>
-                    <FormItem Field="ModifiedDate" Enabled="false"></FormItem>
-                    <FormItem Field="ModifiedBy" Enabled="false"></FormItem>
-                }
-                <FormItem>
-                    <Template>
-                        <label class="mb-2" for="deviceFunction">Device Function:</label>
-                        <TelerikTextArea @bind-Value="@device.DeviceFunction" AutoSize="true" Id="deviceFunction" />
-                    </Template>
-                </FormItem>
-            </FormItems>
+                    <FormItem Field="LocationFloorRoomId"></FormItem>
 
-            <FormButtons></FormButtons>
-        </TelerikForm>
+                    <FormItem>
+                        <Template>
+                            <label class="mb-2" for="rmfPackage">RMF Package:</label>
+                            <TelerikDropDownList Data="@rmfPackages" TextField="PackageName" ValueField="Id" @bind-Value="@device.RmfPackageId" Id="rmfPackage">
+                                <DropDownListSettings>
+                                    <DropDownListPopupSettings Height="auto" />
+                                </DropDownListSettings>
+                            </TelerikDropDownList>
+                        </Template>
+                    </FormItem>
+
+                    @*<FormItem Field="NetworkId"></FormItem>*@
+                    <FormItem>
+                        <Template>
+                            <label class="mb-2" for="network">Network:</label>
+                            <TelerikDropDownList Data="@networks" TextField="NetworkName" ValueField="Id" @bind-Value="@device.NetworkId" Id="network">
+                                <DropDownListSettings>
+                                    <DropDownListPopupSettings Height="auto" />
+                                </DropDownListSettings>
+                            </TelerikDropDownList>
+                        </Template>
+                    </FormItem>
+
+                    @if (Id > 0)
+                    {
+                        <FormItem Field="CreatedDate" Enabled="false"></FormItem>
+                        <FormItem Field="CreatedBy" Enabled="false"></FormItem>
+                        <FormItem Field="ModifiedDate" Enabled="false"></FormItem>
+                        <FormItem Field="ModifiedBy" Enabled="false"></FormItem>
+                    }
+                    <FormItem>
+                        <Template>
+                            <label class="mb-2" for="deviceFunction">Device Function:</label>
+                            <TelerikTextArea @bind-Value="@device.DeviceFunction" AutoSize="true" Id="deviceFunction" />
+                        </Template>
+                    </FormItem>
+                </FormItems>
+
+                <FormButtons></FormButtons>
+            </TelerikForm>
+
+        }
+        else
+        {
+            <h4>Loading...</h4>
+        }
 
 
         @if (Id > 0)

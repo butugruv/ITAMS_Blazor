@@ -53,8 +53,12 @@ namespace BlazorApp.Pages
             networks = await networkData.GetNetworks();
             locations = await locationData.GetLocations();
 
-            // populate cascading lists
-            locationFloors = await locationData.GetLocationFloors(device.LocationId);
+            if (device != null)
+            {
+                // populate cascading lists
+                locationFloors = await locationData.GetLocationFloors(device.LocationId);
+            }
+
         }
 
         private async Task HandleValidSubmit()
@@ -64,16 +68,15 @@ namespace BlazorApp.Pages
                 device.ModifiedDate = DateTime.Now;
                 device.ModifiedBy = currentUser.UserName;
                 await deviceData.UpdateDevice(device);
+                await OnSubmitted.InvokeAsync("save");
             }
             else
             {
                 device.CreatedDate = DateTime.Now;
                 device.CreatedBy = currentUser.UserName;
                 await deviceData.CreateDevice(device);
+                await OnSubmitted.InvokeAsync("create");
             }
-
-            CloseWindow();
-
         }
 
         public void CloseWindow()
@@ -85,6 +88,12 @@ namespace BlazorApp.Pages
         private async void HandleLocationOnChange(object newValue)
         {
             locationFloors = await locationData.GetLocationFloors((int)newValue);
+        }
+
+        private async Task HandleDeleteOnClick()
+        {
+            await deviceData.DeleteDevice(Id);
+            await OnSubmitted.InvokeAsync("delete");
         }
 
     }
