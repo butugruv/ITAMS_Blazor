@@ -1,6 +1,10 @@
 ﻿@inject IDeviceData deviceData
 @inject IJSRuntime JS
 
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 mt-3 border-bottom">
+    <h2><span class="oi oi-paperclip" aria-hidden="true"></span> Device Attachments</h2>
+</div>
+
 <TelerikFileSelect OnSelect="HandleAttachmentSelect" MaxFileSize="10 * 1024 * 1024" />
 
 <TelerikGrid Data="deviceAttachmentsList" ConfirmDelete="true" Resizable="true"

@@ -79,12 +79,6 @@ namespace BlazorApp.Pages
             }
         }
 
-        public void CloseWindow()
-        {
-            // for this situation, just mainly using this to create a trigger on the parent component to do stuff from
-            OnSubmitted.InvokeAsync("submitted");
-        }
-
         private async void HandleLocationOnChange(object newValue)
         {
             locationFloors = await locationData.GetLocationFloors((int)newValue);

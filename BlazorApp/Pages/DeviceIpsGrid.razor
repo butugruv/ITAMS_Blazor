@@ -1,6 +1,10 @@
 ﻿@page "/DeviceIps/{DeviceId:int}"
 @inject IDeviceIpData deviceIpData
 
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h2>IP Addresses</h2>
+</div>
+
 <TelerikGrid Data="deviceIpsList" EditMode="@GridEditMode.Inline" OnUpdate="@HandleUpdate" OnCreate="@HandleCreate" OnDelete="@HandleDelete"
              Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" ConfirmDelete="true" Resizable="true"
              ShowColumnMenu="true" Reorderable="true" Groupable="true">
