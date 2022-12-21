@@ -8,7 +8,7 @@
 </h2>
 
 <TelerikGrid Data="deviceTypeList" EditMode="@GridEditMode.Inline"
-             
+             OnUpdate="@HandleUpdate" OnCreate="@HandleCreate" OnDelete="@HandleDelete"
              Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu" ConfirmDelete="true"
              ShowColumnMenu="true" Reorderable="true" Groupable="true">
 
@@ -37,4 +37,24 @@
         deviceTypeList = await deviceTypeData.GetDeviceTypes();
     }
 
+    private async Task HandleUpdate(GridCommandEventArgs args)
+    {
+        DeviceTypeModel deviceType = (DeviceTypeModel)args.Item;
+        await deviceTypeData.UpdateDeviceType(deviceType);
+        deviceTypeList = await deviceTypeData.GetDeviceTypes();
+    }
+
+    private async Task HandleCreate(GridCommandEventArgs args)
+    {
+        DeviceTypeModel deviceType = (DeviceTypeModel)args.Item;
+        await deviceTypeData.CreateDeviceType(deviceType);
+        deviceTypeList = await deviceTypeData.GetDeviceTypes();
+    }
+
+    private async Task HandleDelete(GridCommandEventArgs args)
+    {
+        DeviceTypeModel deviceType = (DeviceTypeModel)args.Item;
+        await deviceTypeData.DeleteDeviceType(deviceType.Id);
+        deviceTypeList = await deviceTypeData.GetDeviceTypes();
+    }
 }

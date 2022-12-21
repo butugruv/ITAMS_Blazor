@@ -1,17 +1,18 @@
 ﻿@page "/"
+@inject IDeviceTypeData deviceTypeData
 
 <PageTitle>Home</PageTitle>
 
 <h2 class="border-bottom pt-3 pb-2 mb-3">Home</h2>
 <div class="row">
-    <div class="col-6 shadow-sm">
-        <h4>Device Type counts by Network</h4>
+    <div class="col-sm-6 shadow-sm">
+        <h4>Device Type Counts - Column</h4>
         <TelerikChart>
             <ChartSeriesItems>
-                <ChartSeries Type="ChartSeriesType.Column" Name="Series 1" Data="@data1">
+                <ChartSeries Type="ChartSeriesType.Column" Data="@deviceTypeCounts">
+                    <ChartSeriesTooltip Visible="true"></ChartSeriesTooltip>
                 </ChartSeries>
-                <ChartSeries Type="ChartSeriesType.Column" Name="Series 2" Data="@data2">
-                </ChartSeries>
+   
             </ChartSeriesItems>
 
             <ChartCategoryAxes>
@@ -20,60 +21,46 @@
         </TelerikChart>
 
     </div>
-    <div class="col-6 shadow-sm">
-        <h4>Online device counts by Network</h4>
-            <TelerikChart>
-                <ChartSeriesItems>
-                    <ChartSeries Type="ChartSeriesType.Column" Name="SYLAN" Data="@data1">
-                    </ChartSeries>
-                    <ChartSeries Type="ChartSeriesType.Column" Name="SECNET" Data="@data2">
-                    </ChartSeries>
-                </ChartSeriesItems>
+    <div class="col-sm-6 shadow-sm">
+        <h4>Device Type Counts - Bar</h4>
+        <TelerikChart>
+            <ChartSeriesItems>
+                <ChartSeries Type="ChartSeriesType.Bar" Data="@deviceTypeCounts">
+                    <ChartSeriesTooltip Visible="true"></ChartSeriesTooltip>
+                </ChartSeries>
 
-                <ChartCategoryAxes>
-                    <ChartCategoryAxis Categories="@xAxisItems"></ChartCategoryAxis>
-                </ChartCategoryAxes>
-            </TelerikChart>
+            </ChartSeriesItems>
+
+            <ChartCategoryAxes>
+                <ChartCategoryAxis Categories="@xAxisItems"></ChartCategoryAxis>
+            </ChartCategoryAxes>
+
+           
+        </TelerikChart>
     </div>
 </div>
-<div class="row mt-3 mb-3">
-    <div class="col-6 shadow-sm">
-        <h4>Total Costs per Device Type</h4>
-        <TelerikChart>
-            <ChartSeriesItems>
-                <ChartSeries Type="ChartSeriesType.Column" Name="SYLAN" Data="@data1">
-                </ChartSeries>
-                <ChartSeries Type="ChartSeriesType.Column" Name="SECNET" Data="@data2">
-                </ChartSeries>
-            </ChartSeriesItems>
 
-            <ChartCategoryAxes>
-                <ChartCategoryAxis Categories="@xAxisItems"></ChartCategoryAxis>
-            </ChartCategoryAxes>
-        </TelerikChart>
-
-    </div>
-    <div class="col-6 shadow-sm">
-        <h4>Recently Added Devices</h4>
-        <TelerikChart>
-            <ChartSeriesItems>
-                <ChartSeries Type="ChartSeriesType.Column" Name="SYLAN" Data="@data1">
-                </ChartSeries>
-                <ChartSeries Type="ChartSeriesType.Column" Name="SECNET" Data="@data2">
-                </ChartSeries>
-            </ChartSeriesItems>
-
-            <ChartCategoryAxes>
-                <ChartCategoryAxis Categories="@xAxisItems"></ChartCategoryAxis>
-            </ChartCategoryAxes>
-        </TelerikChart>
-
-    </div>
-</div>
 
 
 @code {
-    public List<object> data1 = new List<object>() { 1, 2, 3, 4 };
-    public List<object> data2 = new List<object>() { 2, 3, 4, 5 };
-    public string[] xAxisItems = new string[] { "Q1", "Q2", "Q3", "Q4" };
+    private List<DeviceTypeCountsModel> deviceTypeCountsList;
+    private List<Object> deviceTypeCounts = new List<Object>();
+    private List<string> deviceTypesList = new List<string>();
+
+    public string[] xAxisItems;
+
+    protected override async Task OnInitializedAsync()
+    {
+        deviceTypeCountsList = await deviceTypeData.GetDeviceTypeCounts();
+
+
+        foreach (var listItem in deviceTypeCountsList)
+        {
+            deviceTypeCounts.Add(listItem.Count);
+            deviceTypesList.Add(listItem.TypeName);
+        }
+
+        xAxisItems = deviceTypesList.ToArray();
+    }
+
 }
