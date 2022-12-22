@@ -32,7 +32,7 @@ else
             <GridCommandButton Command="ExcelExport" Icon="file-excel">Export to Excel</GridCommandButton>
             <TelerikTextBox Name="Report Name" @bind-Value="@ReportName"/>
             <GridCommandButton OnClick="HandleSaveReportButtonClick">Save Report</GridCommandButton>
-            <TelerikDropDownList Data="@gridStateList" TextField="StateName" ValueField="Id" @bind-Value="@SelectedReportId" DefaultText="-select a report-" OnChange="HandleGridStateDropDownOnChange">
+            <TelerikDropDownList Data="@gridStateList" TextField="StateName" ValueField="Id" @bind-Value="@SelectedReportId" DefaultText="-select a report-" OnChange="HandleGridStateDropDownOnChange" Width="250px;">
                 <DropDownListSettings>
                 <DropDownListPopupSettings Height="auto"></DropDownListPopupSettings>
                 </DropDownListSettings>

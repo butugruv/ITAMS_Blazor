@@ -107,6 +107,10 @@ namespace BlazorApp.Pages
 
         public async Task HandleGridStateDropDownOnChange()
         {
+            if (windowVisible)
+            {
+                windowVisible = false;
+            }
             if (SelectedReportId > 0)
             {
                 var gridState = await gridStateData.GetGridStateById(SelectedReportId);
