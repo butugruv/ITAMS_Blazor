@@ -1,4 +1,5 @@
 ﻿using ITAMS_DAL.Models;
+using System.Text.Json;
 using Telerik.Blazor;
 using Telerik.Blazor.Components;
 
@@ -7,15 +8,22 @@ namespace BlazorApp.Pages
     public partial class Devices
     {
         private List<IDevicesWithLookupsModel> deviceList;
+        private List<GridStateModel> gridStateList;
+
         //private ObservableCollection<IDevicesWithLookupsModel> devicesListObserved;
         public bool windowVisible = false;
         private int deviceId;
         public TelerikNotification Notification { get; set; }
+        private TelerikGrid<IDevicesWithLookupsModel> Grid;
+        private string serializedState;
+        private string ReportName { get; set; }
+        private int SelectedReportId { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             deviceList = await deviceData.GetDevicesWithLookups();
             //devicesListObserved = new ObservableCollection<IDevicesWithLookupsModel>(deviceList);
+            gridStateList = await gridStateData.GetGridStates();
         }
 
         private void HandleEditButtonClick(IDevicesWithLookupsModel device)
@@ -78,5 +86,38 @@ namespace BlazorApp.Pages
             }
 
         }
+
+        public async Task HandleSaveReportButtonClick()
+        {
+            var state = Grid.GetState();
+            serializedState = JsonSerializer.Serialize(state);
+
+            var gridState = new GridStateModel()
+            {
+                SerializedState = serializedState,
+                StateName = ReportName,
+                GridId = 1
+
+            };
+
+            await gridStateData.CreateGridState(gridState);
+            ReportName = string.Empty;
+        }
+
+        public async Task HandleGridStateDropDownOnChange()
+        {
+            if (SelectedReportId > 0)
+            {
+                var gridState = await gridStateData.GetGridStateById(SelectedReportId);
+                var state = JsonSerializer.Deserialize<GridState<IDevicesWithLookupsModel>>(gridState.SerializedState);
+                await Grid.SetState(state);
+            }
+            else
+            {
+                await Grid.SetState(null);
+            }
+
+        }
     }
+
 }
