@@ -101,6 +101,7 @@ namespace BlazorApp.Pages
             };
 
             await gridStateData.CreateGridState(gridState);
+            gridStateList = await gridStateData.GetGridStates();
             ReportName = string.Empty;
         }
 
