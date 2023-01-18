@@ -79,7 +79,7 @@ namespace BlazorApp.Pages
             }
         }
 
-        private async void HandleLocationOnChange(object newValue)
+        private async Task HandleLocationOnChange(object newValue)
         {
             locationFloors = await locationData.GetLocationFloors((int)newValue);
         }
