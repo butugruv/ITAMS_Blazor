@@ -32,6 +32,8 @@
     .drawer-hamburger {
         position: absolute;
         z-index: 2;
+ 
+    
     }
 
     /* There are some CSS rules from the default site.css related to the sidenav that are commented out
@@ -40,8 +42,9 @@
         */
 </style>
 
+<div class="above-drawer" style="height:5vh;">Test</div>
+<div style="height: 95vh;">
 <TelerikRootComponent>
-
     <TelerikDrawer Data="@NavigablePages" @bind-Expanded="@DrawerExpanded" MiniMode="true" Mode="@DrawerMode.Push" @ref="@DrawerRef" @bind-SelectedItem="@SelectedItem">
         <DrawerContent>
             @* This layout is now in the drawer Content, and is very similar to the default template layout *@
@@ -61,6 +64,7 @@
     </TelerikDrawer>
 
 </TelerikRootComponent>
+</div>
 
 @code {
     bool DrawerExpanded { get; set; } = true;
@@ -72,8 +76,8 @@
     List<DrawerItem> NavigablePages { get; set; } = new List<DrawerItem>
     {
         new DrawerItem { Text = "Home", Url = "/", Icon = "home" },
-        new DrawerItem { IsSeparator = true, Url=string.Empty },//define a URL to separators to make the pre-selection logic easier
-        new DrawerItem { Text = "Counter", Url = "counter", Icon = "plus-outline" },
+        //new DrawerItem { IsSeparator = true, Url=string.Empty },//define a URL to separators to make the pre-selection logic easier
+        new DrawerItem { Text = "Devices", Url = "Devices", Icon = "plus-outline" },
         new DrawerItem { Text = "FetchData", Url = "fetchdata", Icon = "grid" }
     };
 
