@@ -45,7 +45,28 @@
 <div class="above-drawer" style="height:5vh;">Test</div>
 <div style="height: 95vh;">
 <TelerikRootComponent>
-    <TelerikDrawer Data="@NavigablePages" @bind-Expanded="@DrawerExpanded" MiniMode="true" Mode="@DrawerMode.Push" @ref="@DrawerRef" @bind-SelectedItem="@SelectedItem">
+    <TelerikDrawer Data="@NavigablePages" @bind-Expanded="@DrawerExpanded" MiniMode="false" Mode="@DrawerMode.Push" @ref="@DrawerRef" @bind-SelectedItem="@SelectedItem">
+            <Template>
+                <div class="k-drawer-items">
+                    <ul>
+                        @foreach (var item in NavigablePages)
+                        {
+                            @* stop the propagation of the onclick event to prevent the drawer from collapsing *@
+                            @* Use onclick to handle manual item selection and toggle the selected class *@
+                            <li @onclick:stopPropagation
+                            @onclick="@(() => SelectAndNavigate(item))"
+                            class="k-drawer-item @GetSelectedItemClass(item)"
+                            style="white-space:nowrap">
+                                <span class="k-icon k-i-@item.Icon" style="margin-right: 8px;"></span>
+                                @if (DrawerExpanded)
+                                {
+                                    <span class="k-item-text">@item.Text</span>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </Template>
         <DrawerContent>
             @* This layout is now in the drawer Content, and is very similar to the default template layout *@
             <div class="main">
@@ -109,5 +130,18 @@
         public string Url { get; set; }
         public string Icon { get; set; }
         public bool IsSeparator { get; set; }
+    }
+
+    private void SelectAndNavigate(DrawerItem item)
+    {
+        SelectedItem = item;
+
+        _navMan.NavigateTo(SelectedItem.Url);
+    }
+
+    public string GetSelectedItemClass(DrawerItem item)
+    {
+        if (SelectedItem == null) return string.Empty;
+        return SelectedItem.Text.ToLowerInvariant().Equals(item.Text.ToLowerInvariant()) ? "k-selected" : "";
     }
 }
