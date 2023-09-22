@@ -1,5 +1,6 @@
 using BlazorApp.Areas.Identity;
 using BlazorApp.Data;
+using BlazorApp.Services;
 using ITAMS_DAL.Data;
 using ITAMS_DAL.DataAccess;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -40,6 +41,8 @@ namespace BlazorApp
             builder.Services.AddScoped<ILocationData, LocationData>();
             builder.Services.AddScoped<INetworkData, NetworkData>();
             builder.Services.AddScoped<IGridStateData, GridStateData>();
+            builder.Services.AddSingleton<BannerService>();
+
 
             builder.Services.Configure<HubOptions>(options =>
             {

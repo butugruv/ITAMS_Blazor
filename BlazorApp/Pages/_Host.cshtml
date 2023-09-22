@@ -93,6 +93,29 @@
             anchorElement.remove();
             URL.revokeObjectURL(url);
         }
+
+        window.setCookie = function (name, value, expireDays) {
+            var date = new Date();
+            date.setTime(date.getTime() + (expireDays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        };
+
+        window.getCookie = function (name) {
+            var cookieName = name + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var cookies = decodedCookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i];
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1);
+                }
+                if (cookie.indexOf(cookieName) === 0) {
+                    return cookie.substring(cookieName.length, cookie.length);
+                }
+            }
+            return "";
+        };
     </script>
 </body>
 </html>
