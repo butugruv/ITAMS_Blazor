@@ -1,11 +1,12 @@
 ﻿using ITAMS_DAL.Models;
+using Microsoft.AspNetCore.Components;
 using System.Text.Json;
 using Telerik.Blazor;
 using Telerik.Blazor.Components;
 
 namespace BlazorApp.Pages
 {
-    public partial class Devices
+    public partial class Devices : ComponentBase
     {
         private List<IDevicesWithLookupsModel> deviceList;
         private List<GridStateModel> gridStateList;
