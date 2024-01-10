@@ -116,11 +116,11 @@ namespace BlazorApp.Pages
             {
                 var gridState = await gridStateData.GetGridStateById(SelectedReportId);
                 var state = JsonSerializer.Deserialize<GridState<IDevicesWithLookupsModel>>(gridState.SerializedState);
-                await Grid.SetState(state);
+                await Grid.SetStateAsync(state);
             }
             else
             {
-                await Grid.SetState(null);
+                await Grid.SetStateAsync(null);
             }
 
         }

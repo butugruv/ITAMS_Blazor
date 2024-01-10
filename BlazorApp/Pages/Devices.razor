@@ -27,9 +27,9 @@ else
     <TelerikGrid Data="@deviceList" Pageable="true" Sortable="true" FilterMode="@GridFilterMode.FilterMenu"
              Resizable="true" ShowColumnMenu="true" Reorderable="true" Groupable="true" PageSize="10" @ref="Grid">
 
-        <GridToolBar>
+        <GridToolBarTemplate>
             <GridSearchBox Width="300px;"/>
-            <GridCommandButton Command="ExcelExport" Icon="file-excel">Export to Excel</GridCommandButton>
+            <GridCommandButton Command="ExcelExport">Export to Excel</GridCommandButton>
             <TelerikTextBox Name="Report Name" @bind-Value="@ReportName"/>
             <GridCommandButton OnClick="HandleSaveReportButtonClick">Save Report</GridCommandButton>
             <TelerikDropDownList Data="@gridStateList" TextField="StateName" ValueField="Id" @bind-Value="@SelectedReportId" DefaultText="-select a report-" OnChange="HandleGridStateDropDownOnChange" Width="250px;">
@@ -37,7 +37,7 @@ else
                 <DropDownListPopupSettings Height="auto"></DropDownListPopupSettings>
                 </DropDownListSettings>
             </TelerikDropDownList>
-        </GridToolBar>
+        </GridToolBarTemplate>
         <GridColumns>
             <GridCommandColumn Width="70px" Context="dataItem">
                 <AuthorizeView Roles="ITAMSAdmin,ITAMSEdit">
